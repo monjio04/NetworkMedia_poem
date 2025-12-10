@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Animation</title>
+    <link rel="stylesheet" href="poetry1.css">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+</head>
+<body>
+
+    <div class="frame-container">
+        <div class="wood-background"></div>
+
+        <div class="menu-wrapper" id="menuWrapper">
+            
+            <div class="paper paper-b">
+                <div class="face cover-face">
+                    <div class="initial-menu-title">메뉴판</div>
+                </div>
+                <div class="face inside-face"></div>
+            </div>
+
+            <div class="paper paper-a">
+                <div class="final-content">
+                    
+                    <div class="poem-header" id="poemHeader">
+                        <div class="poem-title-box">
+                            <span class="poem-title" id="dispTitle"></span>
+                        </div>
+                        <div class="poem-author" id="dispAuthor"></div>
+                    </div>
+                    
+                    <div class="poem-body-container" id="poemBodyContainer">
+                        </div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="poetry.js"></script>
+</body>
+</html>
