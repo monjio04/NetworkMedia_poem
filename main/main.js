@@ -1,3 +1,5 @@
+/* main.js */
+
 document.addEventListener("DOMContentLoaded", () => {
     // 1. 요소 선택
     const paperContainer = document.getElementById("paperContainer");
@@ -12,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. 스크롤 이벤트 감지
     window.addEventListener("scroll", () => {
         // 왼쪽 긴 선이 끝나는 지점 (약 900px 근처)
-        // 사용자가 이쯤 내렸을 때 텍스트가 보일 것입니다.
         const triggerPoint = 850; 
 
         if (window.scrollY > triggerPoint && !isTextShown && !isScrolling) {
@@ -24,9 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function triggerTextAnimation() {
         isTextShown = true;
         isScrolling = true;
-
-        // [수정 핵심] 화면을 강제로 이동시키는 scrollIntoView 삭제!
-        // instructionText.scrollIntoView({ behavior: 'smooth', block: 'center' }); <-- 범인 삭제
 
         // 1단계: 현재 위치에서 스크롤 즉시 잠금 & 텍스트 페이드인
         document.body.style.overflow = 'hidden'; 
@@ -45,14 +43,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 2000); 
     }
 
-    // 4. 종이 흩뿌리기 함수 (기존 유지)
+    // 4. 종이 흩뿌리기 함수
     function triggerScatterEffect() {
         isScattered = true;
         paperContainer.classList.add("scattered");
     }
 
-    // 5. 종이 마우스 인터랙션 (기존 유지)
+    // 5. 종이 마우스 인터랙션 및 클릭 이벤트
     papers.forEach(paper => {
+        // [기존] 마우스 움직임 효과
         paper.addEventListener("mousemove", (e) => {
             if (!isScattered) return;
             const rect = paper.getBoundingClientRect();
@@ -65,9 +64,25 @@ document.addEventListener("DOMContentLoaded", () => {
             paper.style.setProperty("--x", `${moveX}px`);
             paper.style.setProperty("--y", `${moveY}px`);
         });
+
+        // [기존] 마우스 나갔을 때 초기화
         paper.addEventListener("mouseleave", () => {
             paper.style.setProperty("--x", "0px");
             paper.style.setProperty("--y", "0px");
+        });
+
+        // [추가] 클릭 시 페이지 이동
+        paper.addEventListener("click", () => {
+            // 종이가 흩뿌려진 상태일 때만 클릭 가능
+            if (isScattered) {
+                // 1. 화면이 서서히 사라지는 CSS 효과 실행 (페이드 아웃)
+                document.body.classList.add('move-next');
+
+                // 2. 0.5초(CSS transition 시간) 뒤에 실제로 페이지 이동
+                setTimeout(() => {
+                    window.location.href = '/poetry/poetry1.html';
+                }, 500);
+            }
         });
     });
 });

@@ -87,7 +87,7 @@ body {
 
 /* "시메추" 로고 박스 (선 두껍게, 교차점 분리) */
 .logo-box {
-    font-family: 'Nanum Brush Script', cursive; 
+    font-family: 'Ridibatang', serif;
     font-size: 86px;
     color: #000;
     position: relative;
@@ -281,4 +281,50 @@ body {
 
 .paper-container.scattered .paper {
     transition: transform 0.5s ease-out, opacity 0.8s ease-out;
+}
+
+/* --- [추가] 화면 전환 스타일 --- */
+
+/* 1. 메뉴 섹션 (기본: 숨김 상태) */
+.menu-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #f5f5f5; /* 배경색 유지 */
+    z-index: 9999;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease; /* 부드러운 전환 효과 */
+}
+
+/* 메뉴 내용 스타일 (리디바탕체)
+.menu-content {
+    font-family: 'Ridibatang', serif;
+    text-align: center;
+}
+.menu-content h2 { font-size: 32px; margin-bottom: 20px; }
+.menu-content p { font-size: 18px; color: #555; line-height: 1.6; }
+ */
+
+/* 2. 화면 전환 활성화 상태 (body에 클래스가 붙으면 동작) */
+
+/* 기존 화면들 숨기기 */
+body.move-next .top-section-wrapper,
+body.move-next .bottom-section {
+    opacity: 0;
+    pointer-events: none; /* 클릭 방지 */
+    transition: opacity 0.5s ease;
+}
+
+/* 메뉴 화면 보이기 */
+body.move-next .menu-section {
+    opacity: 1;
+    visibility: visible;
 }

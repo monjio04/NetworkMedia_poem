@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Animation</title>
-    <link rel="stylesheet" href="poetry1.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39&family=KoPub+Batang&display=swap" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    
+    <link rel="stylesheet" href="poetry1.css">
+    
+    <link rel="stylesheet" href="receipt.css">
 </head>
 <body>
 
@@ -15,10 +20,14 @@
         <div class="menu-wrapper" id="menuWrapper">
             
             <div class="paper paper-b">
-                <div class="face cover-face">
+                <div class="face cover-face">   
                     <div class="initial-menu-title">메뉴판</div>
                 </div>
-                <div class="face inside-face"></div>
+                <div class="face inside-face">
+                    <video id="illustrationVideo" class="inside-video" loop muted playsinline>
+                        <source src="/video/ocean.mp4" type="video/mp4">
+                    </video>
+                </div>
             </div>
 
             <div class="paper paper-a">
@@ -34,13 +43,48 @@
                     <div class="poem-body-container" id="poemBodyContainer">
                         </div>
 
+                    <div style="height: 100px;"></div>
+
                 </div>
             </div>
             
         </div>
     </div>
 
+   <div id="recommend-modal" class="modal-overlay">
+        <div class="receipt">
+            <div class="receipt-header-styled">
+                <div class="wongoji-title" id="receiptTitle">오늘의 시메추</div>
+
+                <div class="receipt-info-row">
+                    <span id="receipt-date"></span>
+                    <span id="receipt-time-slot"></span>
+                </div>
+
+                <img src="/image/line.png" class="deco-line" alt="line">
+            </div>
+
+            <div class="receipt-body">
+                <h2 class="menu-name">메뉴 선정 중...</h2>
+                
+                <div class="menu-image-container">
+                    <img id="menuImg" src="" alt="추천 메뉴 이미지">
+                </div>
+
+                <p class="menu-desc">잠시만 기다려주세요.</p>
+            </div>
+
+            <img src="/image/line.png" class="deco-line" alt="line">
+            
+            <div class="receipt-footer">
+                <div class="barcode">CODE 12345</div>
+                <p style="font-size:0.7rem; color:#888; margin-top:5px;">메뉴가 마음에 드신다면 바코드를 눌러주세요</p>
+            </div>
+        </div>
+    </div>
+
     <script src="data.js"></script>
-    <script src="poetry.js"></script>
-</body>
+    <script src="food_data.js"></script>
+
+    <script src="script.js"></script> <script src="poetry.js"></script> </body>
 </html>

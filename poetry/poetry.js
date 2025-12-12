@@ -1,89 +1,113 @@
+// 현재 보여줄 시의 인덱스
 let currentPoemIndex = 0;
+// 현재 보여줄 연(문단)의 인덱스
 let currentStanzaIndex = 0;
+// 애니메이션 중인지 확인
 let isAnimating = false;
 
 document.addEventListener('DOMContentLoaded', () => {
     const menuWrapper = document.getElementById('menuWrapper');
+    
+    // 1. 데이터 로드
     loadPoemData(currentPoemIndex);
 
-    setTimeout(() => { menuWrapper.classList.add('slide-up'); }, 500);
+    // 2. 애니메이션 스케줄링
     setTimeout(() => {
-        menuWrapper.classList.add('open-book');
-        setTimeout(() => { showTitleAndAuthor(); }, 3000);
+        if(menuWrapper) menuWrapper.classList.add('slide-up');
+    }, 500);
+
+    setTimeout(() => {
+        if(menuWrapper) menuWrapper.classList.add('open-book');
+        
+        setTimeout(() => {
+            showTitleAndAuthor();
+        }, 3000); // 3초 뒤 제목 등장
     }, 2500);
 
+    // 휠 이벤트 (passive: false로 설정해야 preventDefault 사용 가능)
     window.addEventListener('wheel', handleScroll, { passive: false });
 });
 
 function loadPoemData(index) {
+    if (typeof poems === 'undefined' || !poems[index]) {
+        console.error("데이터를 불러올 수 없습니다.");
+        return;
+    }
+
     const poem = poems[index];
-    document.getElementById('dispTitle').innerText = poem.title;
-    document.getElementById('dispAuthor').innerText = poem.author;
+    const titleEl = document.getElementById('dispTitle');
+    const authorEl = document.getElementById('dispAuthor');
+
+    if (titleEl) titleEl.innerText = poem.title;
+    if (authorEl) authorEl.innerText = poem.author;
+    
+    // 첫 연 렌더링
     renderStanza(poem.stanzas[0]);
+    
+    // 첫 화면 영상 상태 체크
+    checkVideoVisibility(0, poem.stanzas.length);
 }
+
+// poetry.js의 showTitleAndAuthor 함수 교체
 
 function showTitleAndAuthor() {
-    document.getElementById('poemHeader').classList.add('fade-in');
+    const header = document.getElementById('poemHeader');
+    const bodyContainer = document.getElementById('poemBodyContainer');
+    
+    // 1. 제목/작가 등장
+    if (header) header.classList.add('fade-in');
+    
+    // 2. 시간차를 두고 본문(1연) 등장할 때 -> Shell도 같이 등장
     setTimeout(() => {
-        document.getElementById('poemBodyContainer').classList.add('fade-in');
-    }, 1000);
-}
+        if (bodyContainer) bodyContainer.classList.add('fade-in');
 
-// [핵심 수정] 연(문단) 렌더링 함수
-function renderStanza(text) {
-    const container = document.getElementById('poemBodyContainer');
-    container.innerHTML = ''; 
-    
-    // 1. 먼저 사용자가 입력한 줄바꿈(\n)을 기준으로 나눕니다.
-    // 예: ["울언니 바닷가에서 조개를 따옴", "아롱아롱 조개 껍데기"]
-    const explicitLines = text.split('\n');
-    
-    const finalRows = [];
-
-    // 2. 각 줄을 검사해서 15자가 넘으면 쪼갭니다.
-    explicitLines.forEach(line => {
-        let remainingText = line;
-        
-        // 텍스트가 있거나(빈 줄이라도 표현하고 싶다면 조건 수정 가능)
-        // 여기서는 내용이 있는 경우에만 처리
-        if (remainingText.length === 0) {
-             // 만약 빈 줄(\n\n)도 원고지 한 줄을 차지하게 하고 싶다면:
-             // finalRows.push(""); 
-             return; 
+        // [추가] 1연이 나올 때 shell(조개1)도 같이 페이드인
+        const shell1 = document.getElementById('shell-layer-1');
+        if (shell1) {
+            shell1.classList.add('visible');
         }
 
-        // 15글자씩 잘라서 배열에 담기
+    }, 1000); // 1초 뒤 실행
+}
+
+// 연(문단) 렌더링 함수
+function renderStanza(text) {
+    const container = document.getElementById('poemBodyContainer');
+    if (!container) return; 
+    
+    container.innerHTML = ''; 
+    
+    const explicitLines = text.split('\n');
+    const finalRows = [];
+
+    explicitLines.forEach(line => {
+        let remainingText = line;
+        if (remainingText.length === 0) return; 
+
         while (remainingText.length > 15) {
             finalRows.push(remainingText.substring(0, 15));
             remainingText = remainingText.substring(15);
         }
-        
-        // 15자 이하로 남은 나머지(혹은 원래 짧았던 줄)를 마지막에 추가
         if (remainingText.length > 0) {
             finalRows.push(remainingText);
         }
     });
 
-    // 3. 모드 설정 (항상 15칸 모드)
-    const isDense = true; 
     const columns = 15;
     const rowWidth = '540px'; 
 
-    // 상단 선 생성
     const topLine = document.createElement('div');
     topLine.className = 'horizontal-line';
     topLine.style.width = rowWidth;
     container.appendChild(topLine);
 
-    // 4. 최종 계산된 줄(finalRows)을 렌더링
     finalRows.forEach(line => {
         const rowDiv = document.createElement('div');
         rowDiv.className = 'poem-row';
-        rowDiv.classList.add('mode-dense'); // 항상 15칸 모드
+        rowDiv.classList.add('mode-dense');
         
         const chars = line.split('');
 
-        // 글자 셀 생성
         chars.forEach(char => {
             const cell = document.createElement('div');
             cell.className = 'cell';
@@ -95,7 +119,6 @@ function renderStanza(text) {
             rowDiv.appendChild(cell);
         });
 
-        // 남은 칸 빈 셀로 채우기 (15 - 현재 줄 글자 수)
         const remainingCells = columns - chars.length;
         if (remainingCells > 0) {
             for (let i = 0; i < remainingCells; i++) {
@@ -108,24 +131,42 @@ function renderStanza(text) {
         container.appendChild(rowDiv);
     });
 
-    // 하단 선 생성
     const bottomLine = document.createElement('div');
     bottomLine.className = 'horizontal-line';
     bottomLine.style.width = rowWidth;
     container.appendChild(bottomLine);
+
+    updateIllustration(currentStanzaIndex);
 }
 
+// [핵심 수정] 스크롤 핸들러
 function handleScroll(e) {
+    e.preventDefault();
+
     const bodyContainer = document.getElementById('poemBodyContainer');
-    if (!bodyContainer.classList.contains('fade-in') || isAnimating) return;
+    // 애니메이션 중이거나, 아직 내용이 안 떴으면 무시
+    if (!bodyContainer || !bodyContainer.classList.contains('fade-in') || isAnimating) return;
 
     const poem = poems[currentPoemIndex];
     const totalStanzas = poem.stanzas.length;
 
-    if (e.deltaY > 0) {
-        if (currentStanzaIndex < totalStanzas - 1) changeStanza(currentStanzaIndex + 1);
-    } else {
-        if (currentStanzaIndex > 0) changeStanza(currentStanzaIndex - 1);
+    if (e.deltaY > 0) { 
+        // [아래로 휠]
+        if (currentStanzaIndex < totalStanzas - 1) {
+            // 다음 연으로 넘어감
+            changeStanza(currentStanzaIndex + 1);
+        } else {
+            // [추가] 마지막 연인데 또 내렸다? -> 영수증(메뉴 추천) 발급!
+            // script.js에 있는 함수 호출
+            if (typeof showResultModal === 'function') {
+                showResultModal(poem.title);
+            }
+        }
+    } else { 
+        // [위로 휠]
+        if (currentStanzaIndex > 0) {
+            changeStanza(currentStanzaIndex - 1);
+        }
     }
 }
 
@@ -139,7 +180,73 @@ function changeStanza(nextIndex) {
     setTimeout(() => {
         currentStanzaIndex = nextIndex;
         renderStanza(poem.stanzas[currentStanzaIndex]);
+        
+        checkVideoVisibility(currentStanzaIndex, poem.stanzas.length);
+
         bodyContainer.style.opacity = '1';
-        setTimeout(() => { isAnimating = false; }, 1000);
-    }, 1000);
+        setTimeout(() => { isAnimating = false; }, 2000);
+    }, 2000);
+}
+
+// 영상 제어 함수
+function checkVideoVisibility(currentIndex, totalLength) {
+    const video = document.getElementById('illustrationVideo');
+    if (!video) return;
+
+    if (currentIndex === totalLength - 1) {
+        video.classList.add('visible');
+        video.play().catch(e => console.log("재생 오류:", e));
+    } else {
+        video.classList.remove('visible');
+        setTimeout(() => {
+            if (!video.classList.contains('visible')) {
+                video.pause();
+            }
+        }, 2000);
+    }
+}
+
+
+// poetry.js의 updateIllustration 함수 교체
+
+// poetry.js의 updateIllustration 함수 교체
+
+function updateIllustration(index) {
+    const oldImg = document.getElementById('illustrationImg');
+    if (oldImg) oldImg.remove();
+
+    let shell1 = document.getElementById('shell-layer-1');
+    let shell2 = document.getElementById('shell-layer-2');
+    const insideFace = document.querySelector('.paper-b .inside-face');
+    if (!insideFace) return;
+
+    // 태그 생성 (없을 경우)
+    if (!shell1) {
+        shell1 = document.createElement('img');
+        shell1.id = 'shell-layer-1';
+        shell1.className = 'illustration-item shell-basic'; 
+        shell1.src = '/image/shell.png'; 
+        insideFace.prepend(shell1); 
+    }
+    if (!shell2) {
+        shell2 = document.createElement('img');
+        shell2.id = 'shell-layer-2';
+        shell2.className = 'illustration-item shell-overlay'; 
+        shell2.src = '/image/shell2.png'; 
+        insideFace.prepend(shell2); 
+    }
+
+    // --- [로직 수정됨] ---
+
+    // (A) Shell 1: 여기서는 강제로 켜지 않음! 
+    // -> showTitleAndAuthor 함수에서 켜줄 것임.
+    // -> 한 번 켜진 이후에는 계속 떠 있으므로 별도 처리가 필요 없음.
+
+
+    // (B) Shell 2: 3연(index 2)부터 보임 (기존 유지)
+    if (index >= 2) {
+        shell2.classList.add('visible');
+    } else {
+        shell2.classList.remove('visible');
+    }
 }
