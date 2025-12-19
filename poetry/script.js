@@ -2,8 +2,6 @@
 // 1. 전역 설정 및 상태 관리
 // ==========================================
 
-// API 키가 필요 없습니다! (Open-Meteo 사용)
-
 // 현재 상태 저장 (기본값 설정)
 let currentState = {
     weather: "Clear", // 기본 날씨
@@ -25,7 +23,7 @@ function updateSeason() {
     console.log(`🌸 현재 계절 설정: ${currentState.season}`);
 }
 
-// 2-2. 날씨 가져오기 (Open-Meteo API 사용 - 완전 무료/No Key)
+// 2-2. 날씨 가져오기 (Open-Meteo API 사용)
 function fetchWeather() {
     if (!navigator.geolocation) {
         console.log("브라우저가 위치 정보를 지원하지 않습니다.");
@@ -36,38 +34,33 @@ function fetchWeather() {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         
-        // Open-Meteo API 호출 (현재 위치 기준)
         const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
 
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                // Open-Meteo는 날씨를 '숫자 코드(WMO)'로 줍니다.
-                // 이것을 우리 프로젝트용 단어(Clear, Rain 등)로 변환해야 합니다.
                 const code = data.current_weather.weathercode;
-                let weatherMain = "Clear"; // 변환된 날씨 저장 변수
+                let weatherMain = "Clear";
 
-                // [WMO 코드 변환 로직]
-                // 0,1: 맑음 / 2,3: 흐림 / 45,48: 안개 / 51~: 비, 눈 등
+                // WMO 코드 변환
                 if (code <= 1) weatherMain = "Clear";
                 else if (code <= 3) weatherMain = "Clouds";
                 else if (code <= 48) weatherMain = "Mist";
-                else if (code >= 51 && code <= 67) weatherMain = "Rain"; // 이슬비, 비
-                else if (code >= 71 && code <= 77) weatherMain = "Snow"; // 눈
-                else if (code >= 80 && code <= 82) weatherMain = "Rain"; // 소나기
-                else if (code >= 85 && code <= 86) weatherMain = "Snow"; // 눈보라
-                else if (code >= 95) weatherMain = "Rain"; // 천둥번개
-                else weatherMain = "Clouds"; // 그 외는 흐림 처리
+                else if (code >= 51 && code <= 67) weatherMain = "Rain";
+                else if (code >= 71 && code <= 77) weatherMain = "Snow";
+                else if (code >= 80 && code <= 82) weatherMain = "Rain";
+                else if (code >= 85 && code <= 86) weatherMain = "Snow";
+                else if (code >= 95) weatherMain = "Thunderstorm";
+                else weatherMain = "Clouds";
 
                 currentState.weather = weatherMain;
-                console.log(`🌤 현재 날씨 업데이트(Open-Meteo): ${weatherMain} (Code: ${code})`);
+                console.log(`🌤 현재 날씨 업데이트: ${weatherMain} (Code: ${code})`);
             })
             .catch(err => {
-                console.error("날씨 정보 가져오기 실패:", err);
-                console.log("기본값(Clear)을 사용합니다.");
+                console.error("날씨 정보 실패:", err);
             });
     }, () => {
-        console.log("위치 권한이 차단되었습니다. 기본값(Clear)을 사용합니다.");
+        console.log("위치 권한 차단됨. 기본값 사용.");
     });
 }
 
@@ -81,11 +74,10 @@ fetchWeather();
 // ==========================================
 
 function recommendMenu(poemTitle) {
-    // food_data.js의 poemMap에서 정보 찾기
     const poemInfo = poemMap[poemTitle];
     
     if (!poemInfo) {
-        console.error(`❌ 에러: '${poemTitle}' 제목을 food_data.js에서 찾을 수 없습니다. (띄어쓰기 확인필요)`);
+        console.error(`❌ 에러: '${poemTitle}' 제목을 food_data.js에서 찾을 수 없습니다.`);
         return null;
     }
 
@@ -94,7 +86,6 @@ function recommendMenu(poemTitle) {
 
     // --- [Step 1] 후보군 선정 ---
     if (poemInfo.is_color_mode && poemInfo.theme_color) {
-        // [색감 모드]
         Object.keys(menuDB).forEach(menuName => {
             const mData = menuDB[menuName];
             if (mData.tags.color === poemInfo.theme_color) {
@@ -102,7 +93,6 @@ function recommendMenu(poemTitle) {
             }
         });
     } else {
-        // [일반 모드]
         if (poemInfo.recommendations) {
             poemInfo.recommendations.forEach(item => {
                 const mData = menuDB[item.menu];
@@ -122,23 +112,19 @@ function recommendMenu(poemTitle) {
     let scoredCandidates = [];
 
     candidates.forEach(candidate => {
-        // 여름 제외 필터
         if (candidate.tags.exclude_season && candidate.tags.exclude_season.includes(season)) return;
 
         let score = 1;
         let reason = "default";
 
-        // 날씨 가중치
         if (candidate.tags.weather.includes(weather)) {
             score += 50;
             reason = "weather";
         }
-        // 계절 가중치
         else if (candidate.tags.season.includes(season) || candidate.tags.season.includes("All")) {
             score += 10;
             if (reason === "default") reason = "season";
         }
-        // 색감 가중치
         if (candidate.source === "normal_mode" && 
             poemInfo.theme_color && 
             candidate.tags.color === poemInfo.theme_color) {
@@ -176,8 +162,7 @@ function recommendMenu(poemTitle) {
     return {
         name: selectedMenu.name,
         desc: finalDesc,
-        // [수정] DB에 있는 이미지 경로를 그대로 반환
-        image: selectedMenu.image || "image/default_food.png", // 이미지가 없으면 기본 이미지
+        image: selectedMenu.image || "image/default_food.png",
         colorCode: selectedMenu.tags.color
     };
 }
@@ -188,8 +173,8 @@ function recommendMenu(poemTitle) {
 // ==========================================
 
 const modal = document.getElementById('recommend-modal');
-let isModalShown = false; // 중복 실행 방지용
-// 2. showResultModal 함수 수정 (이미지 태그 연결)
+let isModalShown = false;
+
 function showResultModal(currentPoemTitle) {
     if (isModalShown) return;
     
@@ -203,15 +188,14 @@ function showResultModal(currentPoemTitle) {
     createWongojiTitle();
     updateReceiptDateTime();
 
-    // HTML 업데이트
+    // HTML 요소 선택
     const nameEl = document.querySelector('.menu-name');
     const descEl = document.querySelector('.menu-desc');
-    const imgEl = document.getElementById('menuImg'); // [신규] 이미지 태그 선택
+    const imgEl = document.getElementById('menuImg'); 
     
+    // 내용 업데이트
     if(nameEl) nameEl.innerText = result.name;
     if(descEl) descEl.innerHTML = `"${result.desc}"`;
-    
-    // [신규] 이미지 소스 업데이트
     if(imgEl) {
         imgEl.src = result.image; 
     }
@@ -224,138 +208,125 @@ function showResultModal(currentPoemTitle) {
     isModalShown = true;
 }
 
-// 모달 닫기 이벤트 (검은 배경 클릭 시)
-if(modal) {
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-            // 다시 시를 감상하고 또 추천받고 싶다면 아래 주석 해제
-            // isModalShown = false; 
+// [수정됨] 배경 클릭 시 닫히는 기능은 삭제되었습니다.
+// 대신 바코드를 누르면 처음으로 돌아가는 기능 추가
+
+const barcodeBtn = document.querySelector('.barcode');
+if (barcodeBtn) {
+    barcodeBtn.style.cursor = 'pointer';
+    barcodeBtn.addEventListener('click', () => {
+        // 새로고침 확인 (취향에 따라 confirm 없이 바로 reload 해도 됩니다)
+        if(confirm('처음 화면으로 돌아가시겠습니까?')) {
+            window.location.reload();
         }
     });
 }
 
+
 // ==========================================
-// 5. 영수증 UI 유틸리티 함수 (신규 추가)
+// 5. 영수증 UI 유틸리티 함수
 // ==========================================
 
-// 5-1. 원고지 스타일 타이틀 생성 함수
+// 5-1. 원고지 스타일 타이틀
 function createWongojiTitle() {
     const titleEl = document.getElementById('receiptTitle');
     if (!titleEl) return;
 
-    // HTML에 적힌 텍스트 가져오기 (예: "오늘의 시메추")
     const text = titleEl.innerText; 
-    titleEl.innerHTML = ''; // 기존 텍스트 비움
+    titleEl.innerHTML = ''; 
 
-    // 한 글자씩 <span> 태그로 감싸서 넣기
     for (let char of text) {
         const span = document.createElement('span');
         span.className = 'wongoji-char';
-        
-        // [수정 핵심] 공백(띄어쓰기)일 경우 특수문자(&nbsp;)로 처리
-        if (char === ' ') {
-             // 공백이 너비를 가질 수 있도록 &nbsp; 삽입
-            span.innerHTML = '&nbsp;';
-        } else {
-            span.innerText = char;
-        }
-        
+        if (char === ' ') span.innerHTML = '&nbsp;';
+        else span.innerText = char;
         titleEl.appendChild(span);
     }
 }
 
-// 5-2. 날짜 및 시간대 계산 함수
+// 5-2. 날짜 및 날씨 이미지 표시
 function updateReceiptDateTime() {
     const dateEl = document.getElementById('receipt-date');
     const timeSlotEl = document.getElementById('receipt-time-slot');
     
     const now = new Date();
-    
-    // 날짜 포맷팅 (YYYY/MM/DD)
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
-    
-    // 시간대 매핑 로직
+
+    // [이미지 경로]
+    // 파일명 앞에 '/'를 붙여서 절대경로로 인식하게 합니다.
+    const weatherImageMap = {
+        'Clear': '/image/sun.png',        
+        'Clouds': '/image/cloud.png',     
+        'Rain': '/image/rain.png',        
+        'Snow': '/image/snow.png',        
+        'Mist': '/image/mist.png',        
+        'Thunderstorm': '/image/thunder.png', 
+        'Unknown': '/image/sun.png'   
+    };
+
+    const currentWeather = currentState.weather || 'Clear';
+    const weatherSrc = weatherImageMap[currentWeather] || '/image/sun.png';
+
     const hour = now.getHours();
     const minute = now.getMinutes();
     const totalMinutes = hour * 60 + minute;
+    let timeSlotText = "야식 추천";
 
-    let timeSlotText = "";
-    let timeIcon = "";
+    if (totalMinutes >= 360 && totalMinutes <= 600) timeSlotText = "아침 메뉴";
+    else if (totalMinutes > 600 && totalMinutes <= 930) timeSlotText = "점심 메뉴";
+    else if (totalMinutes > 930 && totalMinutes <= 1320) timeSlotText = "저녁 메뉴";
 
-    // 아침: 06:00 ~ 10:00 (360분 ~ 600분)
-    if (totalMinutes >= 360 && totalMinutes <= 600) {
-        timeSlotText = "아침 메뉴";
-        timeIcon = "🔆";
-    }
-    // 점심: 10:01 ~ 15:30 (601분 ~ 930분)
-    else if (totalMinutes > 600 && totalMinutes <= 930) {
-        timeSlotText = "점심 메뉴";
-        timeIcon = "☀️";
-    }
-    // 저녁: 15:31 ~ 22:00 (931분 ~ 1320분)
-    else if (totalMinutes > 930 && totalMinutes <= 1320) {
-        timeSlotText = "저녁 메뉴";
-        timeIcon = "🌙";
-    }
-    // 야식: 22:01 ~ 05:59 (나머지 시간)
-    else {
-        timeSlotText = "야식 메뉴";
-        timeIcon = "✨";
-    }
-
-    // HTML 업데이트
     if (dateEl) {
-        // 날짜 + 아이콘
-        dateEl.innerHTML = `${year}/${month}/${day} <span class="time-icon">${timeIcon}</span>`;
+        // 날짜 + 이미지 태그
+        dateEl.innerHTML = `${year}/${month}/${day} <img src="${weatherSrc}" class="weather-icon-img" alt="${currentWeather}">`;
     }
+    
     if (timeSlotEl) {
         timeSlotEl.innerText = timeSlotText;
     }
 }
 
-/* script.js 맨 아래쪽 함수 수정 */
+// script.js - fitTextToReceipt 함수 교체
 
-function showResultModal(currentPoemTitle) {
-    if (isModalShown) return;
+function fitTextToReceipt() {
+    const body = document.querySelector('.receipt-body');
+    const desc = document.querySelector('.menu-desc');
+    const imgContainer = document.querySelector('.menu-image-container');
     
-    console.log(`🧾 영수증 추천 시작: 제목 [${currentPoemTitle}]`);
+    if (!body || !desc) return;
 
-    const result = recommendMenu(currentPoemTitle);
-    
-    if(!result) {
-        console.log("추천 결과가 없어 모달을 띄우지 않습니다.");
-        return;
+    // 1. 초기화 (폰트 16px, 이미지 보임)
+    let fontSize = 16;
+    desc.style.fontSize = fontSize + 'px';
+    /* CSS에서 line-clamp를 썼다면 잠시 풀어줘야 정확히 계산됨 */
+    desc.style.webkitLineClamp = 'unset'; 
+
+    if(imgContainer) imgContainer.style.display = 'flex';
+
+    // 2. 내용이 넘치면 -> 폰트 줄이기 (최소 11px까지)
+    // scrollHeight(실제 내용 높이) > clientHeight(보이는 높이)
+    while (body.scrollHeight > body.clientHeight && fontSize > 11) {
+        fontSize -= 0.5;
+        desc.style.fontSize = fontSize + 'px';
     }
 
-    // UI 유틸리티 실행
-    createWongojiTitle();     // 원고지 타이틀 생성
-    updateReceiptDateTime();  // 날짜/시간 업데이트
-
-    // HTML 요소 선택
-    const nameEl = document.querySelector('.menu-name');
-    const descEl = document.querySelector('.menu-desc');
-    
-    // 👇 [수정] 여기 주석(//)을 지우고 올바른 ID('menuImg')를 사용해야 합니다!
-    const imgEl = document.getElementById('menuImg'); 
-    
-    // 텍스트 업데이트
-    if(nameEl) nameEl.innerText = result.name;
-    if(descEl) descEl.innerHTML = `"${result.desc}"`;
-    
-    // 👇 [수정] 이미지 업데이트 코드 활성화
-    if (!imgEl) {
-        alert("비상! HTML에서 id='menuImg'를 못 찾겠어요!");
-    } else {
-        imgEl.src = result.image; 
+    // 3. 폰트를 11px까지 줄였는데도 넘친다? -> 이미지 숨기기
+    if (body.scrollHeight > body.clientHeight) {
+        if(imgContainer) {
+            imgContainer.style.display = 'none'; // 이미지 희생
+        }
+        
+        // 이미지 없애고 다시 폰트 키워보기 (공간 확보됐으므로)
+        fontSize = 16;
+        desc.style.fontSize = fontSize + 'px';
+        while (body.scrollHeight > body.clientHeight && fontSize > 11) {
+            fontSize -= 0.5;
+            desc.style.fontSize = fontSize + 'px';
+        }
     }
     
-    // 모달 보여주기
-    if(modal) {
-        modal.style.display = 'flex';
-        modal.style.opacity = '1';
-    }
-    isModalShown = true;
+    // 4. 마무리: 줄임표(...) 안전장치 다시 켜기
+    desc.style.webkitLineClamp = '5'; 
 }
