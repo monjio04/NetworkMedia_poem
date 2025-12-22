@@ -85,14 +85,54 @@ const poems = [
         
         objects: [
             {
-                src: "image/lemon.png", // 파일 필요
+                src: "/image/lemon1.png", // 파일 필요
                 startAt: 0,
+                endAt: 4,
                 style: {
                     position: "absolute",
-                    top: "30%",      
-                    left: "50%",
-                    width: "30%",
-                    transform: "translate(-50%, -50%) rotate(15deg)",
+                    top: "20%",      
+                    left: "10%",
+                    width: "80%",
+                    transform: "",
+                    zIndex: "5"
+                }
+            },
+            {
+                src: "/image/lemon2.png", // 파일 필요
+                startAt: 2,
+                endAt: 4,
+                style: {
+                    position: "absolute",
+                    top: "42%",      
+                    left: "15%",
+                    width: "45%",
+                    transform: "",
+                    zIndex: "5"
+                }
+            },
+            {
+                src: "/image/lemon3.png", // 파일 필요
+                startAt: 4,
+                endAt: 4,
+                style: {
+                    position: "absolute",
+                    top: "60%",      
+                    left: "30%",
+                    width: "55%",
+                    transform: "",
+                    zIndex: "5"
+                }
+            },
+            {
+                src: "/image/lemon4.png", // 파일 필요
+                startAt: 5,
+                endAt: 6,
+                style: {
+                    position: "absolute",
+                    top: "40%",      
+                    left: "20%",
+                    width: "75%",
+                    transform: "",
                     zIndex: "5"
                 }
             }
@@ -115,50 +155,57 @@ const poems = [
         // 2. 일러스트 이미지 설정
         objects: [
             {
-                src: "/image/shell.png",
-                startAt: 0, // 1연부터 등장
+                src: "/image/red1.png",
+                startAt: 0,
+                endAt:1,
                 style: {
                     position: "absolute",
-                    top: "25%",   
-                    left: "70%",  
-                    width: "40%", 
+                    top: "40%",   
+                    left: "47%",  
+                    width: "75%", 
                     transform: "translate(-50%, -50%)", 
                     zIndex: "5"
                 }
             },
             {
-                src: "/image/shell2.png",
-                startAt: 2, // 3연부터 등장
+                src: "/image/red2.png",
+                startAt: 1,
+                endAt:1, 
                 style: {
                     position: "absolute",
-                    top: "48%",   
-                    left: "40%",  
-                    width: "60%", 
+                    top: "65%",   
+                    left: "64%",  
+                    width: "70%", 
                     transform: "translate(-50%, -50%)",
                     zIndex: "10"
                 }
             },
             {
-                type: "video",       // ✨ 핵심: 이것은 비디오다! 라고 알려줌
-                src: "/video/ocean.mp4",
-                startAt: 3,          // ✨ 핵심: 4연(index 3)부터 등장
+                src: "/image/red3.png",
+                startAt: 2,
+                endAt:3, 
                 style: {
                     position: "absolute",
-                    bottom: "0",
-                    left: "0",
-                    width: "100%",
-                    height: "45%",
-                    objectFit: "cover",
-                    mixBlendMode: "multiply",
-                    //opacity: "0.8",
-                    zIndex: "1",      // 이미지가 가려지지 않게 뒤로 배치
-                
-                    "mask-image": "linear-gradient(to top, black 85%, transparent 100%)",
-                    "-webkit-mask-image": "linear-gradient(to top, black 85%, transparent 100%)"
+                    top: "35%",   
+                    left: "50%",  
+                    width: "120%", 
+                    transform: "translate(-50%, 40%) rotate(40deg)",
+                    zIndex: "10"
                 }
             },
-
-            
+            {
+                src: "/image/red4.png",
+                startAt: 4,
+                endAt:5, 
+                style: {
+                    position: "absolute",
+                    top: "50%",   
+                    left: "50%",  
+                    width: "75%", 
+                    transform: "translate(-50%, -50%)",
+                    zIndex: "10"
+                }
+            }
             
         ]
     },
@@ -177,48 +224,42 @@ const poems = [
         // 2. 일러스트 이미지 설정
         objects: [
             {
-                src: "/image/shell.png",
+                src: "/image/kimchi1.png",
                 startAt: 0, // 1연부터 등장
                 style: {
                     position: "absolute",
-                    top: "25%",   
-                    left: "70%",  
-                    width: "40%", 
+                    top: "70%",   
+                    left: "50%",  
+                    width: "135%", 
                     transform: "translate(-50%, -50%)", 
                     zIndex: "5"
                 }
             },
             {
-                src: "/image/shell2.png",
-                startAt: 2, // 3연부터 등장
+                src: "/image/kimchi2.png",
+                startAt: 1, // 3연부터 등장
                 style: {
                     position: "absolute",
-                    top: "48%",   
-                    left: "40%",  
-                    width: "60%", 
+                    top: "27%",   
+                    left: "37%",  
+                    width: "55%", 
                     transform: "translate(-50%, -50%)",
                     zIndex: "10"
                 }
             },
             {
-                type: "video",       // ✨ 핵심: 이것은 비디오다! 라고 알려줌
-                src: "/video/ocean.mp4",
-                startAt: 3,          // ✨ 핵심: 4연(index 3)부터 등장
+                src: "/image/kimchi3.png",
+                startAt: 2, // 3연부터 등장
                 style: {
                     position: "absolute",
-                    bottom: "0",
-                    left: "0",
-                    width: "100%",
-                    height: "45%",
-                    objectFit: "cover",
-                    mixBlendMode: "multiply",
-                    //opacity: "0.8",
-                    zIndex: "1",      // 이미지가 가려지지 않게 뒤로 배치
-                
-                    "mask-image": "linear-gradient(to top, black 85%, transparent 100%)",
-                    "-webkit-mask-image": "linear-gradient(to top, black 85%, transparent 100%)"
+                    top: "45%",   
+                    left: "72%",  
+                    width: "65%", 
+                    transform: "translate(-50%, -50%)",
+                    zIndex: "10"
                 }
-            },  
+            }
+            
             
         ]
     },{
@@ -234,49 +275,18 @@ const poems = [
         // 2. 일러스트 이미지 설정
         objects: [
             {
-                src: "/image/shell.png",
+                src: "/image/chicken.png",
                 startAt: 0, // 1연부터 등장
                 style: {
                     position: "absolute",
-                    top: "25%",   
-                    left: "70%",  
-                    width: "40%", 
+                    top: "50%",   
+                    left: "53%",  
+                    width: "97%", 
                     transform: "translate(-50%, -50%)", 
                     zIndex: "5"
                 }
-            },
-            {
-                src: "/image/shell2.png",
-                startAt: 2, // 3연부터 등장
-                style: {
-                    position: "absolute",
-                    top: "48%",   
-                    left: "40%",  
-                    width: "60%", 
-                    transform: "translate(-50%, -50%)",
-                    zIndex: "10"
-                }
-            },
-            {
-                type: "video",       // ✨ 핵심: 이것은 비디오다! 라고 알려줌
-                src: "/video/ocean.mp4",
-                startAt: 3,          // ✨ 핵심: 4연(index 3)부터 등장
-                style: {
-                    position: "absolute",
-                    bottom: "0",
-                    left: "0",
-                    width: "100%",
-                    height: "45%",
-                    objectFit: "cover",
-                    mixBlendMode: "multiply",
-                    //opacity: "0.8",
-                    zIndex: "1",      // 이미지가 가려지지 않게 뒤로 배치
-                
-                    "mask-image": "linear-gradient(to top, black 85%, transparent 100%)",
-                    "-webkit-mask-image": "linear-gradient(to top, black 85%, transparent 100%)"
-                }
-            },  
-            
+            }
+           
         ]
     },
     {
@@ -295,48 +305,55 @@ const poems = [
         // 2. 일러스트 이미지 설정
         objects: [
             {
-                src: "/image/shell.png",
+                src: "/image/potato.png",
                 startAt: 0, // 1연부터 등장
+                endAt:2,
                 style: {
                     position: "absolute",
-                    top: "25%",   
-                    left: "70%",  
-                    width: "40%", 
+                    top: "65%",   
+                    left: "50%",  
+                    width: "80%", 
                     transform: "translate(-50%, -50%)", 
                     zIndex: "5"
                 }
             },
             {
-                src: "/image/shell2.png",
+                src: "/image/potato2.png",
                 startAt: 2, // 3연부터 등장
+                endAt:2,
                 style: {
                     position: "absolute",
-                    top: "48%",   
+                    top: "40%",   
                     left: "40%",  
-                    width: "60%", 
+                    width: "70%", 
                     transform: "translate(-50%, -50%)",
                     zIndex: "10"
                 }
             },
             {
-                type: "video",       // ✨ 핵심: 이것은 비디오다! 라고 알려줌
-                src: "/video/ocean.mp4",
-                startAt: 3,          // ✨ 핵심: 4연(index 3)부터 등장
+                src: "/image/potato3.png",
+                startAt: 3, // 3연부터 등장
                 style: {
                     position: "absolute",
-                    bottom: "0",
-                    left: "0",
-                    width: "100%",
-                    height: "45%",
-                    objectFit: "cover",
-                    mixBlendMode: "multiply",
-                    //opacity: "0.8",
-                    zIndex: "1",      // 이미지가 가려지지 않게 뒤로 배치
-                
-                    "mask-image": "linear-gradient(to top, black 85%, transparent 100%)",
-                    "-webkit-mask-image": "linear-gradient(to top, black 85%, transparent 100%)"
+                    top: "30%",   
+                    left: "40%",  
+                    width: "70%", 
+                    transform: "translate(-50%, -50%)",
+                    zIndex: "10"
                 }
-            },  
+            },
+            {
+                src: "/image/potato4.png",
+                startAt: 4, // 3연부터 등장
+                style: {
+                    position: "absolute",
+                    top: "60%",   
+                    left: "60%",  
+                    width: "60%", 
+                    transform: "translate(-50%, -50%)",
+                    zIndex: "10"
+                }
+            }
             
         ]
     },

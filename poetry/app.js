@@ -142,31 +142,38 @@ function initObjects(objectsData) {
 }
 
 // [수정] 스크롤 시 보이기/숨기기 + 비디오 재생/정지 처리
+// [수정됨] 스크롤 시 보이기/숨기기 (endAt 로직 추가됨)
+// [수정됨] 디버깅용 로그가 포함된 함수
 function updateObjectVisibility(stanzaIndex) {
     const poem = poems[currentPoemIndex];
     if (!poem.objects) return;
+
+    console.log(`🔍 현재 연(Index): ${stanzaIndex} 확인 중...`);
 
     poem.objects.forEach((obj, idx) => {
         const el = document.getElementById(`obj-${idx}`);
         if (!el) return;
 
-        // 등장 시점이 되었는가?
-        if (stanzaIndex >= obj.startAt) {
-            el.classList.add('visible');
+        // 1. 시작 조건
+        const isAfterStart = stanzaIndex >= obj.startAt;
+        
+        // 2. 종료 조건 (endAt이 없거나, 현재 연이 endAt보다 작거나 같으면 통과)
+        const isBeforeEnd = obj.endAt === undefined || stanzaIndex <= obj.endAt;
 
+        // ★ 감시 로그 출력 (F12 콘솔에서 확인 가능)
+        console.log(` - 이미지[${idx}] 조건: 시작(${obj.startAt})~끝(${obj.endAt}) / 현재(${stanzaIndex})`);
+        console.log(`   👉 결과: 시작지남(${isAfterStart}) && 안끝남(${isBeforeEnd}) = ${isAfterStart && isBeforeEnd ? "보임" : "숨김"}`);
+
+        if (isAfterStart && isBeforeEnd) {
+            el.classList.add('visible');
             el.style.opacity = (obj.type === 'video') ? "0.6" : "1";
-            
-            // [추가] 비디오라면 재생 시작!
-            if (obj.type === 'video') {
-                el.play().catch(e => console.log('재생 에러(무시 가능):', e));
-            }
+            if (obj.type === 'video') el.play().catch(e => {});
         } else {
-            el.classList.remove('visible');
-            
-            // [추가] 숨겨질 땐 비디오 정지 (성능 절약)
+            el.classList.remove('visible'); // 여기서 visible 클래스가 빠져야 사라짐
+            el.style.opacity = "";
             if (obj.type === 'video') {
                 el.pause();
-                el.currentTime = 0; // 처음으로 되감기
+                el.currentTime = 0;
             }
         }
     });

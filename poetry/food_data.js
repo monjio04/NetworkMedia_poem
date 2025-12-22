@@ -268,7 +268,7 @@ const menuDB = {
             // [색깔]
             color: "화려하지 않은 수수한 빛깔 속에, 그 어떤 산해진미보다 깊은 넉넉함이 담겨 있습니다."
         },
-        image: "image/potato_ongsimi.png" 
+        image: "/image/potato_ongsimi.png" 
     },
 
     "감자전": {
@@ -288,7 +288,7 @@ const menuDB = {
             // [색깔]
             color: "노릇노릇하게 익은 감자전 한 장이면, 세상 부러울 것 없는 넉넉한 마음이 됩니다."
         },
-        image: "image/potato_pancake.png"
+        image: "/image/potato_jeon.png"
     },
 
     "감자탕": {
@@ -305,7 +305,7 @@ const menuDB = {
             season: "여럿이 둘러앉아 나누어 먹다 보면, 어느새 '화가 날 때'의 기억은 눈 녹듯 사라지죠.",
             color: "투박한 껍질 속 하얀 속살처럼, 붉은 국물 속에 숨겨진 부드러운 위로를 맛보세요."
         },
-        image: "image/gamjatang.png"
+        image: "/image/gamjatang.png"
     }
     
 };
@@ -353,7 +353,7 @@ const poemMap = {
     },
     "붉은 빛": {
         theme_color: "Red", 
-        is_color_mode: true, 
+        is_color_mode: false, 
         recommendations: [
             { 
                 menu: "대구뽈찜", 
