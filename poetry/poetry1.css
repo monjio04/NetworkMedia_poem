@@ -1,263 +1,299 @@
-/* 폰트 선언 */
+/* ============================================================
+   1. 기본 설정 및 폰트
+   ============================================================ */
+/* RIDI 바탕체 (필요 시 로컬 파일이 없으면 웹폰트 사용 권장) */
 @font-face {
     font-family: 'RIDIBatang';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff') format('woff');
-    font-weight: normal; font-style: normal;
+    font-weight: normal; 
+    font-style: normal;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #333; overflow: hidden; }
-
-.frame-container { width: 1440px; height: 1024px; position: relative; overflow: hidden; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
-.wood-background { 
-    width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 0; 
-    
-    /* 이미지 경로: image 폴더 안의 bg-wood.png */
-    background: url('/image/bg-wood.png') no-repeat center center; 
-    background-size: cover; /* 화면 꽉 차게 */
-}
-.menu-wrapper { position: absolute; bottom: -1200px; left: 140px; width: 1159px; height: 1024px; perspective: 2500px; transform-style: preserve-3d; z-index: 10; }
-.paper { height: 1024px; position: absolute; top: 0; box-shadow: none; transform-style: preserve-3d; outline: 1px solid transparent; }
-
-/* 오른쪽 종이 (A) */
-.paper-a {
-    width: 702px; right: 0; z-index: 1;
-    
-    /* 배경 설정 (이미지 경로 확인 필요) */
-    background: url('/image/paper-a.png') no-repeat center center; 
-    background-size: cover; 
-    background-color: #F1E8DC;
-
-    display: flex;
-    flex-direction: column;
-    
-    /* [수정 포인트 1] center -> flex-start로 변경하여 위에서부터 시작하게 함 */
-    justify-content: flex-start; 
-    align-items: center;
-
-    /* [수정 포인트 2] 위쪽 여백을 주어 내용을 아래로 밀어냄 (수치 조절 가능) */
-    padding-top: 250px; 
-}
-/* 왼쪽 종이 (B) */
-.paper-b {
-    width: 458px; left: 0; transform-origin: right center; transform: rotateY(180deg); z-index: 10;
-    transition: transform 2.5s cubic-bezier(0.25, 1, 0.5, 1);
-    background: url('/image/paper-b.png') no-repeat center center; 
-    background-size: cover; background-color: #D9C7AE;
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
 }
 
-.face {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    display: flex; justify-content: center; align-items: center;
-    backface-visibility: hidden;
-}
-
-.cover-face {
-    transform: rotateY(180deg);
-    /* 표지 영상 관련 스타일 삭제됨 */
-}
-
-/* [수정] 내지면 스타일 */
-.inside-face { 
-    transform: rotateY(0deg);
-    position: relative;
-    overflow: hidden; /* 영상 튀어나감 방지 */
-}
-
-/* [신규] 내지 비디오 스타일 */
-.inside-video {
-    position: absolute;
-    
-    /* [위치 변경] 위쪽(top) 대신 아래쪽(bottom)에 배치 */
-    top: auto;   /* 기존 top 설정 초기화 */
-    bottom: 0;   /* 바닥에 붙이기 */
-    left: 0;
-    
-    /* [크기 변경] 높이를 40~50% 정도로 설정 */
-    width: 100%;
-    height: 45%; 
-    
-    /* 비율 유지하며 꽉 채우기 */
-    object-fit: cover;
-    
-    /* 종이 질감과 섞이게 (흰 배경 영상일 때 필수) */
-    mix-blend-mode: multiply; 
-    
-    /* [디자인 디테일] 위쪽 경계선을 부드럽게 지우기 (그라데이션 마스크) */
-    /* 아래쪽(100%)은 선명하게 보이고, 위쪽(0%)으로 갈수록 투명해짐 */
-    -webkit-mask-image: linear-gradient(to top, black 50%, transparent 100%);
-    mask-image: linear-gradient(to top, black 50%, transparent 100%);
-    
-    /* 초기 상태: 투명 */
-    opacity: 0; 
-    transition: opacity 2.0s ease-in-out;
-}
-
-/* [신규] 영상이 보일 때 붙을 클래스 */
-.inside-video.visible {
-    opacity: 0.8; /* 원하는 투명도 */
-}
-
-/* [공통] 모든 일러스트 이미지의 기본 설정 */
-.illustration-item {
-    position: absolute;
-    opacity: 0; /* 기본은 투명 */
-    transition: opacity 1.5s ease-in-out; /* 페이드 효과 */
-}
-
-/* [보이기용 클래스] */
-.illustration-item.visible {
-    opacity: 1;
-}
-
-/* poetry1.css */
-
-/* [공통] 모든 일러스트 이미지의 기본 설정 (기존 유지) */
-.illustration-item {
-    position: absolute;
-    opacity: 0;
-    transition: opacity 1.5s ease-in-out;
-}
-.illustration-item.visible {
-    opacity: 1;
-}
-
-/* 1. 기본 조개 (shell.png) - 위쪽 빨간 동그라미 위치 */
-.shell-basic {
-    /* [수정] 위치 지정 (종이의 왼쪽 상단 기준) */
-    top: 25%;   /* 위에서 20% 내려온 위치 */
-    left: 70%;  /* 왼쪽에서 60% 떨어진 위치 */
-    transform: translate(-50%, -50%); /* 이미지의 정중앙을 해당 좌표에 맞춤 */
-
-    /* 크기 설정 */
-    width: 40%; /* 종이 너비의 40% */
-    height: auto;
-    
-    z-index: 5; 
-}
-
-/* 2. 나중에 뜨는 조개 (shell2.png) - 아래쪽 빨간 동그라미 위치 */
-.shell-overlay {
-    /* [수정] 위치 지정 */
-    top: 48%;   /* 위에서 60% 내려온 위치 */
-    left: 40%;  /* 왼쪽에서 45% 떨어진 위치 */
-    transform: translate(-50%, -50%);
-
-    /* 크기 설정 */
-    width: 60%; /* 종이 너비의 60% */
-    height: auto;
-    
-    z-index: 10; /* 기본 조개보다 위에 뜸 */
-}
-
-/* 이미지가 보일 때 붙을 클래스 */
-.inside-image.visible {
-    opacity: 1;
-}
-
-/* [수정] 텍스트 스타일 */
-.initial-menu-title {
-    font-family: 'RIDIBatang', serif; font-size: 60px; font-weight: 500; color: #4F4F4F;
-    writing-mode: vertical-rl; text-orientation: upright; letter-spacing: 1em; margin-right: 0;
-    
-    /* [중요] 영상 위에 글씨가 보여야 하므로 z-index 설정 */
-    position: relative;
-    z-index: 1; 
-}
-
-/* 텍스트 스타일 */
-.initial-menu-title { font-family: 'RIDIBatang', serif; font-size: 60px; font-weight: 500; color: #4F4F4F; writing-mode: vertical-rl; text-orientation: upright; letter-spacing: 1em; margin-right: 0; }
-
-.final-content {
-    width: auto;
-    font-family: 'RIDIBatang', serif; color: #4F4F4F;
-    text-align: center;
-    display: flex; flex-direction: column; align-items: center; 
-}
-
-/* 헤더 영역 */
-.poem-header {
-    opacity: 0; transition: opacity 1.0s ease-out;
-    /* width: 100%;  */
-
-    width: 540px !important;
-
-    display: flex; flex-direction: column; align-items: center; position: relative;
-    
-    /* [수정 1] 작가와 본문 사이 간격 대폭 증가 */
-    margin-bottom: 100px; 
-}
-.poem-header.fade-in { opacity: 1; }
-
-.poem-title-box { border: none; padding: 20px 0; margin-bottom: 20px; }
-.poem-title { font-size: 36px; font-weight: bold; 
-    letter-spacing: 0.5em;
-    margin-left: 0.5em;
-}
-
-.poem-author {
-    font-size: 26px;
-    align-self: flex-end; 
-    margin-right: 0; 
-}
-
-/* 본문 컨테이너 */
-.poem-body-container {
-    min-height: 400px;
-    display: flex; flex-direction: column;
-    align-items: center;
-    gap: 10px; /* 줄과 줄 사이, 줄과 선 사이 간격 */
-    opacity: 0; transition: opacity 2.0s ease-out;
-}
-.poem-body-container.fade-in { opacity: 1; }
-
-/* [신규] 상단/하단 가로선 */
-.horizontal-line {
-    height: 2px; /* 선 두께 */
-    background-color: #FF6A6A; /* 붉은색 */
-    /* 너비는 JS에서 제어 */
-}
-
-/* 개별 줄(Row) 스타일 */
-.poem-row {
-    display: flex; /* Grid 대신 Flex 사용으로 높이 이슈 해결 */
-    border: 1px solid #FF6A6A; 
-    background-color: transparent;
-    
-    /* [수정 2] 세로줄 삐져나옴 방지를 위한 핵심 설정 */
+body { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    background-color: #333; 
     overflow: hidden; 
 }
 
-/* 모드 1: 기본 (11자) */
-.poem-row.mode-standard {
-    width: 484px;
-    height: 46px; 
-}
-/* 모드 2: 긴 글 (15자) */
-.poem-row.mode-dense {
-    width: 540px; 
-    height: 38px;
+/* ============================================================
+   2. 배경 및 프레임
+   ============================================================ */
+.frame-container { 
+    width: 1440px; 
+    height: 1024px; 
+    position: relative; 
+    overflow: hidden; 
+    box-shadow: 0 0 50px rgba(0,0,0,0.5); 
 }
 
-/* 셀 스타일 */
-.cell {
-    /* Flex로 셀 너비 균등 분배 */
-    flex: 1; 
-    height: 100%; /* 부모 높이 꽉 채움 */
+.wood-background { 
+    width: 100%; 
+    height: 100%; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    z-index: 0; 
     
-    border-right: 1px solid #FF6A6A;
-    display: flex; justify-content: center; align-items: center; 
-    color: #000;
+    /* [주의] CSS 파일이 css 폴더 안에 있다면 상위 폴더(../)로 나가야 합니다. */
+    background: url('../image/bg-wood.png') no-repeat center center; 
+    background-size: cover; 
 }
-.cell:last-child {
+
+/* ============================================================
+   3. 책(Book) 애니메이션 레이아웃
+   ============================================================ */
+.menu-wrapper { 
+    position: absolute; 
+    bottom: -1200px; /* 초기 위치: 화면 아래 */
+    left: 140px; 
+    width: 1159px; 
+    height: 1024px; 
+    perspective: 2500px; 
+    transform-style: preserve-3d; 
+    z-index: 10; 
+}
+
+/* 책이 위로 올라오는 애니메이션 */
+.menu-wrapper.slide-up { 
+    animation: slideUpAction 2.0s ease-out forwards; 
+}
+@keyframes slideUpAction { 
+    from { bottom: -1200px; } 
+    to { bottom: 0; } 
+}
+
+/* 책이 펼쳐지는 상태 */
+.menu-wrapper.open-book .paper-b { 
+    transform: rotateY(0deg); 
+}
+
+/* 종이 공통 설정 */
+.paper { 
+    height: 1024px; 
+    position: absolute; 
+    top: 0; 
+    transform-style: preserve-3d; 
+    box-shadow: none; 
+}
+
+/* 오른쪽 종이 (Paper A: 시 텍스트) */
+.paper-a { 
+    width: 702px; 
+    right: 0; 
+    z-index: 1;
+    background: url('../image/paper-a.png') no-repeat center center; 
+    background-size: cover; 
+    background-color: #F1E8DC;
+    
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-start; 
+    align-items: center; 
+    padding-top: 250px; /* 텍스트 시작 위치 */
+}
+
+/* 왼쪽 종이 (Paper B: 영상/그림) */
+.paper-b { 
+    width: 458px; 
+    left: 0; 
+    transform-origin: right center; 
+    transform: rotateY(180deg); /* 닫혀있는 상태 */
+    z-index: 10;
+    transition: transform 2.5s cubic-bezier(0.25, 1, 0.5, 1);
+    
+    background: url('../image/paper-b.png') no-repeat center center; 
+    background-size: cover; 
+    background-color: #D9C7AE;
+}
+
+.face { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    backface-visibility: hidden; 
+}
+
+/* 표지 (닫혔을 때) */
+.cover-face { 
+    transform: rotateY(180deg); 
+}
+
+/* 내지 (열렸을 때) */
+.inside-face { 
+    transform: rotateY(0deg); 
+    position: relative; 
+    overflow: hidden; /* 영상이나 이미지가 종이 밖으로 나가는 것 방지 */
+}
+
+/* ============================================================
+   4. [핵심] 동적 콘텐츠 (영상 & 이미지)
+   ============================================================ */
+/* 이 부분은 JS(data_poems.js)에서 위치(top, left)와 크기를 정해줍니다.
+   여기서는 "공통 애니메이션"과 "기본 동작"만 정의합니다.
+*/
+
+/* 배경 영상 */
+.inside-video {
+    position: absolute;
+    /* top, left, width, height 삭제됨 -> JS가 제어함 */
+    
+    opacity: 0; /* 기본 투명 */
+    transition: opacity 2.0s ease-in-out; /* 부드럽게 등장 */
+    pointer-events: none; /* 클릭 방해 금지 */
+}
+
+/* 일러스트 이미지 */
+.illustration-item {
+    position: absolute;
+    /* top, left, width 삭제됨 -> JS가 제어함 */
+    
+    opacity: 0; 
+    transition: opacity 1.5s ease-in-out;
+    pointer-events: none;
+}
+
+/* JS가 visible 클래스를 붙이면 나타남 */
+.inside-video.visible,
+.illustration-item.visible { 
+    opacity: 1; 
+}
+
+
+/* ============================================================
+   5. 텍스트 스타일 (제목, 본문)
+   ============================================================ */
+/* 표지 제목 */
+.initial-menu-title { 
+    font-family: 'RIDIBatang', serif; 
+    font-size: 60px; 
+    font-weight: 500; 
+    color: #4F4F4F; 
+    writing-mode: vertical-rl; 
+    text-orientation: upright; 
+    letter-spacing: 1em; 
+    margin-right: 0; 
+    position: relative; 
+    z-index: 1; 
+}
+
+/* 오른쪽 페이지 컨텐츠 래퍼 */
+.final-content { 
+    width: auto; 
+    font-family: 'RIDIBatang', serif; 
+    color: #4F4F4F; 
+    text-align: center; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+}
+
+/* 시 헤더 (제목 + 작가) */
+.poem-header { 
+    opacity: 0; 
+    transition: opacity 1.0s ease-out; 
+    width: 540px !important; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    position: relative; 
+    margin-bottom: 100px; /* 본문과의 간격 */
+}
+
+.poem-header.fade-in { 
+    opacity: 1; 
+}
+
+.poem-title-box { 
+    border: none; 
+    padding: 20px 0 30px; 
+    margin-bottom: 20px; 
+}
+
+.poem-title { 
+    font-size: 36px; 
+    font-weight: bold; 
+    letter-spacing: 0.5em; 
+    margin-left: 0.5em; /* 자간 보정 */
+    white-space: nowrap;
+}
+
+.poem-title.long {
+    font-size: 26px;      /* 36px -> 26px로 축소 */
+    letter-spacing: 0.3em; /* 자간도 살짝 좁힘 */
+    margin-left: 0.3em;
+}
+
+.poem-author { 
+    font-size: 26px; 
+    align-self: flex-end; /* 오른쪽 정렬 느낌 */
+    margin-right: 0; 
+    letter-spacing: 0.3em;
+    margin-right: -0.3em;
+}
+
+/* ============================================================
+   6. 시 본문 그리드 (원고지 효과)
+   ============================================================ */
+.poem-body-container { 
+    min-height: 400px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 10px; /* 줄 간격 */
+    opacity: 0; 
+    transition: opacity 2.0s ease-out; 
+}
+
+.poem-body-container.fade-in { 
+    opacity: 1; 
+}
+
+/* 가로선 (붉은색) */
+.horizontal-line { 
+    height: 2px; 
+    background-color: #FF6A6A; 
+}
+
+/* 한 줄 (Row) */
+.poem-row { 
+    display: flex; 
+    border: 1px solid #FF6A6A; 
+    background-color: transparent; 
+    overflow: hidden; /* 글자 튀어나감 방지 */
+}
+
+/* 15자 모드 (기본값) */
+.poem-row.mode-dense { 
+    width: 540px; 
+    height: 38px; 
+}
+
+/* 개별 글자 칸 (Cell) */
+.cell { 
+    flex: 1; 
+    height: 100%; 
+    border-right: 1px solid #FF6A6A; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    color: #000; 
+    font-size: 28px; 
+}
+
+.cell:last-child { 
     border-right: none; 
 }
-
-/* 모드별 폰트 사이즈 */
-.poem-row.mode-standard .cell { font-size: 32px; }
-.poem-row.mode-dense .cell { font-size: 28px; }
-
-/* 애니메이션 */
-.menu-wrapper.slide-up { animation: slideUpAction 2.0s ease-out forwards; }
-@keyframes slideUpAction { from { bottom: -1200px; } to { bottom: 0; } }
-.menu-wrapper.open-book .paper-b { transform: rotateY(0deg); }

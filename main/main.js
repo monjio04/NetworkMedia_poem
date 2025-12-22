@@ -1,6 +1,14 @@
 /* main.js */
 
 document.addEventListener("DOMContentLoaded", () => {
+    // 0. [중요] 데이터가 잘 로드되었는지 확인
+    if (typeof poems === 'undefined') {
+        console.error("❌ 에러: data_poems.js가 로드되지 않았습니다. HTML을 확인해주세요.");
+        // 데이터가 없으면 가짜 데이터라도 만들어서 에러 방지 (선택사항)
+        // poems = [{ id: 1 }]; 
+        return; 
+    }
+
     // 1. 요소 선택
     const paperContainer = document.getElementById("paperContainer");
     const instructionText = document.querySelector(".instruction");
@@ -13,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. 스크롤 이벤트 감지
     window.addEventListener("scroll", () => {
-        // 왼쪽 긴 선이 끝나는 지점 (약 900px 근처)
         const triggerPoint = 850; 
 
         if (window.scrollY > triggerPoint && !isTextShown && !isScrolling) {
@@ -26,13 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
         isTextShown = true;
         isScrolling = true;
 
-        // 1단계: 현재 위치에서 스크롤 즉시 잠금 & 텍스트 페이드인
         document.body.style.overflow = 'hidden'; 
         instructionText.classList.add('fade-in'); 
 
-        // 2단계: 2초 동안 텍스트 감상 (CSS transition 시간과 동일)
         setTimeout(() => {
-            // 3단계: 잠금 해제 및 종이 등장
             document.body.style.overflow = 'auto'; 
             isScrolling = false;
             
@@ -49,9 +53,20 @@ document.addEventListener("DOMContentLoaded", () => {
         paperContainer.classList.add("scattered");
     }
 
-    // 5. 종이 마우스 인터랙션 및 클릭 이벤트
-    papers.forEach(paper => {
-        // [기존] 마우스 움직임 효과
+    // ============================================================
+    // 5. [수정됨] 랜덤 시 배정 및 클릭 이벤트 연결
+    // ============================================================
+
+    // (1) 시 목록을 무작위로 섞습니다 (셔플)
+    const shuffledPoems = [...poems].sort(() => Math.random() - 0.5);
+
+    papers.forEach((paper, index) => {
+        
+        // (2) 종이마다 시 하나씩 짝지어주기
+        // 시 개수보다 종이가 많을 경우를 대비해 % 연산자 사용 (반복 배정)
+        const matchedPoem = shuffledPoems[index % shuffledPoems.length];
+
+        // [기존 유지] 마우스 움직임 효과
         paper.addEventListener("mousemove", (e) => {
             if (!isScattered) return;
             const rect = paper.getBoundingClientRect();
@@ -65,22 +80,23 @@ document.addEventListener("DOMContentLoaded", () => {
             paper.style.setProperty("--y", `${moveY}px`);
         });
 
-        // [기존] 마우스 나갔을 때 초기화
+        // [기존 유지] 마우스 나갔을 때 초기화
         paper.addEventListener("mouseleave", () => {
             paper.style.setProperty("--x", "0px");
             paper.style.setProperty("--y", "0px");
         });
 
-        // [추가] 클릭 시 페이지 이동
+        // [수정됨] 클릭 시 해당 시의 ID를 가지고 페이지 이동
         paper.addEventListener("click", () => {
             // 종이가 흩뿌려진 상태일 때만 클릭 가능
             if (isScattered) {
-                // 1. 화면이 서서히 사라지는 CSS 효과 실행 (페이드 아웃)
+                // 1. 페이드 아웃 효과
                 document.body.classList.add('move-next');
 
-                // 2. 0.5초(CSS transition 시간) 뒤에 실제로 페이지 이동
+                // 2. 0.5초 뒤 페이지 이동 (랜덤 배정된 ID 사용!)
                 setTimeout(() => {
-                    window.location.href = '/poetry/poetry1.html';
+                    // 폴더 구조에 맞춰 경로 설정 (poetry 폴더 안에 있다면 아래 유지)
+                    window.location.href = `../poetry/poetry.html?id=${matchedPoem.id}`;
                 }, 500);
             }
         });
