@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -12,6 +13,10 @@
     <link rel="stylesheet" href="receipt.css">
 </head>
 <body>
+    <div id="intro-message" class="intro-message">
+    스크롤 하면서<br>
+    시를 감상하세요
+    </div>
 
     <div class="frame-container">
         <div class="wood-background"></div>
@@ -55,7 +60,7 @@
     <div id="recommend-modal" class="modal-overlay">
         <div class="receipt">
             <div class="receipt-header-styled">
-                <div class="wongoji-title" id="receiptTitle">오늘의 시메추</div>
+               <img src="../image/title.png" class="title-image" alt="오늘의 시메추">
 
                 <div class="receipt-info-row">
                     <span id="receipt-date"></span>
@@ -78,11 +83,16 @@
             <img src="/image/line.png" class="deco-line" alt="line">
             
             <div class="receipt-footer">
-                <div class="barcode">CODE 12345</div>
+                <a href="/archive/archive.html"style="text-decoration: none; color: black;">
+                    <div class="barcode">CODE 12345</div>
+                </a>
+                
                 <p style="font-size:0.7rem; color:#888; margin-top:5px;">메뉴가 마음에 드신다면 바코드를 눌러주세요</p>
             </div>
         </div>
     </div>
+
+     <img id="backToArchiveBtn" src="../image/arrow2.png" alt="뒤로 가기" style="display: none;">
 
     <script src="data_poems.js"></script> <script src="food_data.js"></script>  <script src="app.js"></script>
 

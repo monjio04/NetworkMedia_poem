@@ -74,7 +74,7 @@ const menuDB = {
             color: "Red", // 연어의 붉은색
             weather: ["Clear", "Clouds"],
             season: ["Summer"],
-            exclude_season: ["Winter"]
+            exclude_season: []
         },
         ment: {
             // [기본] 시의 '바다', '어항' 이미지 연결
@@ -89,7 +89,7 @@ const menuDB = {
         image: "/image/salmon_soba.png"
     },
 
-    "우삼겹 샐러드": {
+    "열무 냉면": {
         tags: {
             color: "Green", 
             weather: ["Clear", "Rain", "Clouds"], 
@@ -106,7 +106,7 @@ const menuDB = {
             // [색깔] 초록색
             color: "싱그러운 초록빛 야채와 노릇한 고기가 어우러진, 후회 없는 건강한 한 끼입니다."
         },
-        image: "/image/beef_salad.png"
+        image: "/image/Naengmyeon.png"
     },
 
     "대구뽈찜": {
@@ -345,7 +345,7 @@ const poemMap = {
                 custom_ment: "바다를 담은 커다란 그릇 안에서, 연어와 함께 달달한 여름의 한 컷을 남겨보세요."
             },
             { 
-                menu: "우삼겹 샐러드",
+                menu: "열무 냉면",
                 // "내일의 새벽", "청춘" 인용
                 custom_ment: "내일의 새벽을 위해, 풀내음 가득한 샐러드와 든든한 고기로 청춘의 허기를 달래보아요."
             }

@@ -359,17 +359,14 @@ const poems = [
     },
     {
         id: 7,
-        title: "그게 비빔밥이라고 본다",
-        author: "윤성학",
+        title: "가을 햇볕",
+        author: "안도현",
 
         stanzas: [
-            "기억해\n그때 당신이 했던 말\n전주비빔밥이든, 골동반이든,궁중비빔밥이든\n혹은 새싹비빔밥이든",
-            "재료 다듬어 준비하고 각색 웃기 부쳐 올리고\n갖은 양념 대령하고",
-            "그때 당신이 했던 말\n수저를 내려놓으며,\n그럼 뭘해\n이렇게 뭐가 뭔지 모르게 한군데 부대껴",
-            "품새 뭉개지고 빛깔마다 헝클어져버렸네\n나 참, 참 나 닮았네",
-            "그러다 다시 대접에 숟가락을 삽날처럼 박아넣으며\n정색 반색 했던 말",
-            "뭉게지고 흐트러지고 얽히고설킬 것\n다 알면서도\n보기 좋게 먹기 좋게 장만하고",
-            "한입 크기 다듬어\n형형이 색색이 본새로 올려놓은 마음\n나는 그걸 비빔밥이라 본다던"
+            "가을 햇볕 한마당 고추 말리는 마을 지나가면\n가슴이 뛴다",
+            "아가야\n저렇듯 맵게 살아야 한다",
+            "호호 눈물 빠지며 밥 비벼먹는\n고추장도 되고",
+            "그럴 때 속을 달래는 찬물의 빛나는\n사랑도 되고"
         ],
         
         // 2. 일러스트 이미지 설정
@@ -398,25 +395,48 @@ const poems = [
                     zIndex: "10"
                 }
             },
+            
+        ]
+    },
+    {
+        id: 8,
+        title: "어느 늦은 저녁 나는",
+        author: "한강",
+
+        stanzas: [
+            "어느\n늦은 저녁 나는",
+            "흰 공기에 담긴 밥에서\n김이 피어 올라오는 것을 보고 있었다",
+            "그때 알았다\n무엇인가 영원히 지나가버렸다고\n지금도 영원히\n지나가버리고 있다고",
+            "밥을 먹어야지",
+            "나는 밥을 먹었다"
+        ],
+        
+        // 2. 일러스트 이미지 설정
+        objects: [
             {
-                type: "video",       // ✨ 핵심: 이것은 비디오다! 라고 알려줌
-                src: "/video/ocean.mp4",
-                startAt: 3,          // ✨ 핵심: 4연(index 3)부터 등장
+                src: "/image/shell.png",
+                startAt: 0, // 1연부터 등장
                 style: {
                     position: "absolute",
-                    bottom: "0",
-                    left: "0",
-                    width: "100%",
-                    height: "45%",
-                    objectFit: "cover",
-                    mixBlendMode: "multiply",
-                    //opacity: "0.8",
-                    zIndex: "1",      // 이미지가 가려지지 않게 뒤로 배치
-                
-                    "mask-image": "linear-gradient(to top, black 85%, transparent 100%)",
-                    "-webkit-mask-image": "linear-gradient(to top, black 85%, transparent 100%)"
+                    top: "25%",   
+                    left: "70%",  
+                    width: "40%", 
+                    transform: "translate(-50%, -50%)", 
+                    zIndex: "5"
                 }
-            },  
+            },
+            {
+                src: "/image/shell2.png",
+                startAt: 2, // 3연부터 등장
+                style: {
+                    position: "absolute",
+                    top: "48%",   
+                    left: "40%",  
+                    width: "60%", 
+                    transform: "translate(-50%, -50%)",
+                    zIndex: "10"
+                }
+            },
             
         ]
     }

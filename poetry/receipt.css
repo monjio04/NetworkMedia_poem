@@ -162,40 +162,15 @@
     transition: font-size 0.1s; /* 부드러운 크기 조절 */
 }
 
-/* =========================================
-   4. 원고지 타이틀 스타일
-   ========================================= */
-.wongoji-title {
-    display: table;
-    margin: 20px auto; /* 마진 축소 */
-    position: relative;
-    padding: 10px 0;
-    font-family: 'RIDIBatang', serif;
-    font-size: 0; 
-}
-.wongoji-title::before, .wongoji-title::after {
-    content: ""; position: absolute; left: 0; width: 100%; height: 1px; background: #bbb;
-}
-.wongoji-title::before { top: 0; }
-.wongoji-title::after { bottom: 0; }
-
-.wongoji-char {
-    display: inline-block;
-    position: relative;
-    font-size: 24px;
-    color: #222;
-    padding: 0 8px;
-    vertical-align: middle;
-    min-width: 24px;
-    text-align: center;
-}
-.wongoji-char::after {
-    content: ""; position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-    height: 90%; width: 1px; background: #bbb;
-}
-.wongoji-char:first-child::before {
-    content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-    height: 90%; width: 1px; background: #bbb;
+/* [추가] 제목 이미지 스타일 */
+.title-image {
+    display: block; /* 블록 요소로 만들어 중앙 정렬 */
+    margin: 30px auto 10px auto; /* 상하단 여백, 좌우 중앙 정렬 */
+    max-width: 100%; /* 부모(receipt) 너비를 넘지 않도록 */
+    height: auto;    /* 높이는 비율에 맞게 자동 조절 */
+    
+    /* 필요 시 크기 수동 지정 */
+    /* width: 300px; */ 
 }
 
 /* 날씨 아이콘 이미지 */

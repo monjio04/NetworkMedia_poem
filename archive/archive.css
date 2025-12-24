@@ -1,0 +1,374 @@
+/* archive.css */
+
+/* 1. 폰트 로드 (바코드, 리디바탕, 나눔명조) */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Barcode+39&family=Noto+Sans+KR:wght@400;700&family=Nanum+Myeongjo&display=swap');
+
+@font-face {
+    font-family: 'RIDIBatang';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-color: #EAE3D8;
+    font-family: 'Pretendard', serif;
+    margin: 0; padding: 0;
+    overflow-x: hidden;
+}
+
+.back-btn {
+    position: fixed; top: 20px; left: 20px;
+    z-index: 100; cursor: pointer;
+
+    /* 👇 [수정] 아이콘과 글자를 가로로 나란히 배치 */
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 8px;            /* 아이콘과 글자 사이 간격 */
+    
+    text-decoration: none;
+    /* 너비 제한 해제 */
+    width: auto; 
+    height: 40px;
+    
+    /* (선택사항) 부드러운 효과 */
+    transition: opacity 0.2s;
+}
+
+/* 마우스 올렸을 때 살짝 흐려짐 */
+.back-btn:hover {
+    opacity: 0.7;
+}
+
+.back-btn img { 
+    /* 아이콘 크기 고정 */
+    width: 30px; 
+    height: 30px; 
+    object-fit: contain;
+}
+
+/* 👇 [추가] 옆에 붙은 글자 스타일 */
+.back-btn span {
+    font-size: 20px;       /* 글자 크기 */
+    font-weight: bold;     /* 글자 굵게 */
+    font-family: 'RIDIBatang', 'Nanum Myeongjo', serif;
+    color: #555;           /* 글자 색상 (진한 회색) */
+    padding-top: 2px;      /* 시각적 높이 미세 조정 */
+    padding-left: 5px;
+}
+
+.archive-container {
+    max-width: 1000px; margin: 0 auto;
+    padding-top: 100px; padding-bottom: 150px;
+    display: flex; flex-direction: column; align-items: center;
+}
+
+/* 판자 스타일 */
+.plank-row {
+    position: relative;
+    width: 95vw; left: 50%; right: 50%;
+    margin-left: -47vw; margin-right: -50vw;
+    height: 120px;
+    background-image: url('../image/plank.png');
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+    
+    display: flex; justify-content: center; align-items: flex-start;
+    gap: 80px; /* 영수증 간격 */
+    padding-top: 30px;
+    margin-bottom: 300px; /* 판자 사이 간격 넉넉히 */
+    overflow: visible;
+}
+.plank-row:last-child { margin-bottom: 0; }
+
+/* 날짜 라벨 */
+.date-label {
+    position: absolute; z-index: 5;
+    background-image: url('../image/label.png');
+    background-size: 100% 100%; background-repeat: no-repeat;
+    display: flex; justify-content: center; align-items: center;
+    font-family: 'RIDIBatang', serif; color: #333;
+    width: 150px; height: 40px; font-size: 16px;
+    top: -13px; left: calc(50% - 680px);
+}
+
+/* =========================================
+   미니 영수증 (디자인 리뉴얼)
+   ========================================= */
+.mini-receipt {
+    min-height: 310px;
+    width: 260px;  /* 너비를 좁게 설정 (중요) */
+    background-color:#FCFBF6;
+    padding: 35px 15px 20px 15px; /* 상단 패딩을 핀 때문에 넉넉히 */
+    box-sizing: border-box;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex; flex-direction: column; align-items: center;
+    position: relative;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 톱니바퀴 찢어진 종이 효과 (하단) */
+.mini-receipt::after {
+    content: "";
+    position: absolute;
+    bottom: -8px; left: 0;
+    width: 100%; height: 8px;
+    background: linear-gradient(135deg, transparent 50%, #FCFBF6 50%),
+                linear-gradient(45deg,#FCFBF6 50%, transparent 50%);
+    background-size: 10px 10px; /* 톱니 크기 작게 */
+    background-repeat: repeat-x;
+    transform: rotate(180deg);
+}
+
+/* 핀 스타일 */
+.pin {
+    width: 12px; height: 12px;
+    background-color: #555;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px; left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+/* --- 영수증 내부 내용 --- */
+
+/* 1. 원고지 타이틀 (오늘의 시메추) */
+.wongoji-header {
+    display: flex; justify-content: center; gap: 2px;
+    margin-bottom: 5px;
+}
+.wongoji-char {
+    border: 1px solid #aaa;
+    width: 18px; height: 18px;
+    font-family: 'RIDIBatang', 'Nanum Myeongjo', serif;
+    font-size: 11px;
+    line-height: 19px; /* 수직 중앙 정렬 보정 */
+    text-align: center;
+    color: #444;
+}
+
+.title-img-mini {
+    width: 130px; /* 미니 영수증에서의 크기 */
+    height: auto;
+    display: block;
+    margin: 0 auto 5px auto;
+}
+
+.title-img-large {
+    width: 21ㅁ0px; /* 모달(큰 영수증)에서의 크기 */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* 2. 날짜 정보 줄 */
+.date-info-row {
+    width: 100%;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 10px; color: #666;
+    font-family: 'Noto Sans KR', sans-serif;
+    border-bottom: 1px dashed #aaa; /* 구분선 */
+    padding-bottom: 4px; margin-bottom: 12px;
+}
+
+/* 3. 메뉴 본문 */
+.receipt-body { width: 100%; text-align: center; }
+
+.menu-name {
+    font-family: 'RIDIBatang', serif;
+    font-size: 15px; font-weight: bold;
+    margin: 0 0 8px 0; color: #222;
+}
+
+/* 🚨 이미지가 너무 크지 않게 조절하는 핵심 코드 */
+.menu-img {
+    width: 90px;  /* 너비 고정 */
+    height: 90px; /* 높이 고정 */
+    object-fit: contain;
+    margin: 5px auto 10px auto;
+    display: block;
+    filter: grayscale(100%); /* 흑백 처리 */
+}
+
+.menu-desc {
+    font-family: 'RIDIBatang', serif;
+    font-size: 10px;
+    color: #555; line-height: 1.4;
+    word-break: keep-all;
+    margin-bottom: 10px; padding: 0 5px;
+}
+
+/* 4. 푸터 (바코드) */
+.receipt-footer {
+    width: 100%;
+    border-top: 1px dashed #aaa; /* 구분선 */
+    padding-top: 8px;
+    display: flex; justify-content: center;
+}
+.barcode {
+    font-family: 'Libre Barcode 39', cursive;
+    font-size: 24px; color: #333;
+    transform: scaleY(1.2);
+}
+
+/* 배치 높낮이 (지그재그) */
+.mini-receipt:nth-of-type(2) { margin-top: 10px; }
+.mini-receipt:nth-of-type(3) { margin-top: 50px; }
+.mini-receipt:nth-of-type(4) { margin-top: 0px; }
+
+/* 반응형 라벨 위치 */
+.plank-row:nth-child(even) .date-label { left: auto; right: calc(50% - 680px); }
+@media (max-width: 1300px) {
+    .date-label { left: 40px; }
+    .plank-row:nth-child(even) .date-label { right: 40px; }
+}
+@media (max-width: 768px) {
+    .date-label { left: 50%; transform: translateX(-50%); }
+    .plank-row:nth-child(even) .date-label { left: 50%; right: auto; transform: translateX(-50%); }
+}
+
+
+.modal-overlay {
+    display: none;
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+/* 2. 큰 영수증 본체 */
+.modal-receipt {
+    width: 480px;
+    min-height: 580px; 
+    
+    background-color: #fff;
+    /* 👇 [수정] 상하 패딩을 줄여서 전체적으로 타이트하게 (50px -> 40px/30px) */
+    padding: 50px 25px 30px 25px; 
+    
+    box-sizing: border-box;
+    position: relative;
+    display: flex; flex-direction: column; align-items: center;
+
+    filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.25));
+    mask-image: none; -webkit-mask-image: none;
+}
+
+/* 3. 찢어진 종이 효과 (유지) */
+.modal-receipt::after {
+    content: ""; position: absolute; 
+    bottom: -12px; left: 0;
+    width: 100%; height: 12px;
+    background: linear-gradient(135deg, transparent 50%, #fff 50%),
+                linear-gradient(45deg, #fff 50%, transparent 50%);
+    background-size: 20px 20px; 
+    background-repeat: repeat-x;
+    transform: rotate(180deg);
+}
+
+/* 4. 핀 스타일 */
+.pin-large {
+    width: 18px; height: 18px;
+    background-color: #333; border-radius: 50%;
+    position: absolute; top: 20px; left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.3); z-index: 10;
+}
+
+/* 5. 내부 요소 스타일 (여백 대폭 축소) */
+.large-header { margin-top: 5px; margin-bottom: 0px; }
+.large-header .wongoji-char {
+    width: 24px; height: 24px; font-size: 14px; line-height: 24px;
+    border-color: #888;
+}
+
+.large-date { 
+    font-size: 16px; 
+    margin-top: 20px;
+    margin-bottom: 20px; 
+    width: 100%; 
+    display: flex; justify-content: space-between;
+    
+    border-bottom: none;
+
+    /* 👇 [추가] 이미지 배경 적용 */
+    background-image: url('../image/line.png'); /* ⚠️ 파일명 확인 */
+    background-repeat: repeat-x;
+    background-position: center bottom;
+    background-size: auto 3px; /* 큰 영수증이니까 선도 조금 더 두껍게? (선택사항) */
+
+    /* 👇 [수정] 패딩 조절 */
+    padding-top: 15px;
+    padding-bottom: 25px; /* 넉넉하게 조절 */
+    color: #666;
+}
+
+.large-name { 
+    font-size: 24px; font-weight: bold; color: #222;
+    /* 👇 [수정] 제목 위아래 여백 감소 (20px/10px -> 10px/5px) */
+    margin-top: 20px; 
+    margin-bottom: 5px; 
+}
+
+.large-img { 
+    /* 👇 [수정] 이미지 크기를 살짝 줄여서 공간 확보 (250px -> 200px) */
+    width: 280px; 
+    height: 200px; 
+    object-fit: contain; 
+    /* 👇 [수정] 이미지 아래 설명과의 간격 감소 (25px -> 10px) */
+    margin-bottom: 0px; 
+    filter: grayscale(100%);
+}
+
+.large-desc { 
+    font-size: 17px; line-height: 1.6; 
+    color: #444; text-align: center;
+    word-break: keep-all; padding: 0 10px;
+    /* 👇 [수정] 설명 아래 여백 감소 (30px -> 15px) */
+    margin-bottom: 15px; 
+}
+
+/* 6. 바코드 영역 */
+.large-footer { 
+margin-top: auto; width: 100%;
+
+    /* 👇 [수정] 기존 border 제거 */
+    /* border-top: 1px dashed #ccc; */
+    border-top: none;
+
+    /* 👇 [추가] 이미지 배경 적용 */
+    background-image: url('../image/line.png'); /* ⚠️ 파일명 확인 */
+    background-repeat: repeat-x;
+    background-position: center top;
+    background-size: auto 3px; /* 높이 조절 */
+
+    /* 👇 [수정] 패딩 조절 */
+    padding-top: 30px; /* 넉넉하게 조절 */
+
+    display: flex; flex-direction: column; align-items: center;}
+
+.large-barcode { 
+font-family: 'Libre Barcode 39', cursive;
+    font-size: 60px; /* 크기 유지 */
+    margin-top: 5px; margin-bottom: 0px;
+    color: #222;
+    line-height: 1;
+    
+    /* 👇 [필수 추가] 클릭이 잘 되도록 위치를 최상단으로 올림 */
+    position: relative; 
+    z-index: 100; 
+    cursor: pointer
+}
+.click-guide { font-size: 11px; color: #999; margin: 0; }
+
+/* 닫기 버튼 */
+.close-btn {
+    position: absolute; top: 15px; right: 20px;
+    background: none; border: none;
+    font-size: 28px; color: #aaa; cursor: pointer; z-index: 100;
+}
+.close-btn:hover { color: #333; }
