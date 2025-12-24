@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // 2. 0.5초 뒤 페이지 이동 (랜덤 배정된 ID 사용!)
                 setTimeout(() => {
                     // 폴더 구조에 맞춰 경로 설정 (poetry 폴더 안에 있다면 아래 유지)
-                    window.location.href = `../poetry/poetry.html?id=${matchedPoem.id}`;
+                    window.location.href = `/poetry/poetry.html?id=${matchedPoem.id}`;
                 }, 500);
             }
         });

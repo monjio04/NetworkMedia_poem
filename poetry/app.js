@@ -305,51 +305,78 @@ let isModalShown = false;
 function recommendMenu(poemTitle) {
     const poemInfo = poemMap[poemTitle];
     if (!poemInfo) {
-        console.error(`❌ 에러: food_data.js에 '${poemTitle}' 정보가 없습니다.`);
+        console.error(`❌ 에러: data_poems.js에 '${poemTitle}' 정보가 없습니다.`);
         return null;
     }
 
     let candidates = [];
-    const { weather, season } = currentState;
+    const { weather, season } = currentState; // 현재 날씨, 계절
 
+    // 1. 후보군 선정 로직 (기존과 동일하지만, source 속성 정리)
     if (poemInfo.is_color_mode && poemInfo.theme_color) {
+        // [색깔 모드]
         Object.keys(menuDB).forEach(menuName => {
             const mData = menuDB[menuName];
             if (mData.tags.color === poemInfo.theme_color) {
-                candidates.push({ name: menuName, ...mData, source: "color_mode" });
+                // 색깔 모드는 poemMap에 멘트가 없으므로 임시 default 멘트 사용
+                // (필요하다면 poemMap에 color_mode용 멘트도 추가 가능)
+                candidates.push({ 
+                    name: menuName, 
+                    ...mData, 
+                    custom_ment_obj: { default: "이 시의 색깔과 꼭 닮은 메뉴예요." }, // 임시 객체
+                    source: "color_mode" 
+                });
             }
         });
     } else {
+        // [일반 모드] poemMap의 recommendations 기반
         if (poemInfo.recommendations) {
             poemInfo.recommendations.forEach(item => {
                 const mData = menuDB[item.menu];
                 if (mData) {
                     candidates.push({ 
-                        name: item.menu, ...mData, 
-                        custom_ment: item.custom_ment, source: "normal_mode"
+                        name: item.menu, 
+                        ...mData, 
+                        // ⭐ [핵심] custom_ment 객체를 그대로 가져옴
+                        custom_ment_obj: item.custom_ment, 
+                        source: "normal_mode"
                     });
                 }
             });
         }
     }
 
+    // 2. 점수 계산 (기존 로직 유지)
     let scoredCandidates = [];
     candidates.forEach(candidate => {
         if (candidate.tags.exclude_season && candidate.tags.exclude_season.includes(season)) return;
-        let score = 1;
-        let reason = "default";
-
-        if (candidate.tags.weather.includes(weather)) { score += 50; reason = "weather"; }
-        else if (candidate.tags.season.includes(season) || candidate.tags.season.includes("All")) { score += 10; if (reason === "default") reason = "season"; }
         
-        if (candidate.source === "normal_mode" && poemInfo.theme_color && candidate.tags.color === poemInfo.theme_color) {
-            score += 30; if (reason === "default") reason = "color";
+        let score = 1;
+        let reason = "default"; // 추천 이유
+
+        // 날씨 매칭
+        if (candidate.tags.weather.includes(weather)) { 
+            score += 50; 
+            reason = "weather"; 
         }
+        // 계절 매칭
+        else if (candidate.tags.season.includes(season) || candidate.tags.season.includes("All")) { 
+            score += 10; 
+            if (reason === "default") reason = "season"; 
+        }
+        
+        // 색깔 매칭 (일반 모드일 때도 테마 컬러와 같으면 가산점)
+        if (candidate.source === "normal_mode" && poemInfo.theme_color && candidate.tags.color === poemInfo.theme_color) {
+            score += 30; 
+            if (reason === "default") reason = "color";
+        }
+
         scoredCandidates.push({ ...candidate, score, reason });
     });
 
     if (scoredCandidates.length === 0) return { name: "추천 메뉴 없음", desc: "조건에 맞는 메뉴를 찾지 못했어요.", image: "" };
 
+    // 3. 랜덤 추첨 (기존 로직 유지)
     const totalScore = scoredCandidates.reduce((acc, cur) => acc + cur.score, 0);
     let randomNum = Math.random() * totalScore;
     let selectedMenu = null;
@@ -359,17 +386,23 @@ function recommendMenu(poemTitle) {
         if (randomNum <= 0) { selectedMenu = item; break; }
     }
 
-    let finalDesc = selectedMenu.ment.default;
-    if (selectedMenu.reason === "weather" && selectedMenu.ment.weather) finalDesc = selectedMenu.ment.weather;
-    else if (poemInfo.is_color_mode && selectedMenu.ment.color) finalDesc = selectedMenu.ment.color;
-    else if (selectedMenu.reason === "season" && selectedMenu.ment.season) finalDesc = selectedMenu.ment.season;
-    else if (selectedMenu.custom_ment) finalDesc = selectedMenu.custom_ment;
-    else if (selectedMenu.reason === "color" && selectedMenu.ment.color) finalDesc = selectedMenu.ment.color;
+    // ⭐ [핵심 변경] 최종 멘트 결정 로직
+    // poemMap에서 가져온 custom_ment_obj 안에서 상황에 맞는 멘트를 꺼냄
+    let finalDesc = selectedMenu.custom_ment_obj.default; // 기본값
+
+    if (selectedMenu.reason === "weather" && selectedMenu.custom_ment_obj.weather) {
+        finalDesc = selectedMenu.custom_ment_obj.weather;
+    } else if (selectedMenu.reason === "season" && selectedMenu.custom_ment_obj.season) {
+        finalDesc = selectedMenu.custom_ment_obj.season;
+    }
+    
+    // 만약 weather/season 멘트가 비어있다면 다시 default로 돌아감
+    if(!finalDesc) finalDesc = selectedMenu.custom_ment_obj.default;
 
     return {
         name: selectedMenu.name,
         desc: finalDesc,
-        image: selectedMenu.image || "image/default_food.png",
+        image: selectedMenu.image || "../image/default_food.png",
         colorCode: selectedMenu.tags.color
     };
 }
