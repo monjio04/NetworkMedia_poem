@@ -86,7 +86,8 @@
 .barcode {
     font-family: 'Libre Barcode 39', cursive;
     font-size: 3.5rem; /* 크기 살짝 조정 */
-    margin-top: 8px;
+    margin-top: 15px;
+    margin-bottom: -8px;
     transform: scaleY(1.1);
     color: #222;
     text-align: center;
@@ -118,7 +119,8 @@
 .menu-name {
     font-family: 'RIDIBatang', serif;
     font-size: 22px;
-    margin: 5px 0; 
+    margin-top: 10px;
+    margin-bottom: 0px;
     font-weight: normal;
     color: #000;
     text-align: center;
@@ -129,13 +131,14 @@
 .menu-image-container {
     flex-shrink: 1; 
     width: 100%;
-    max-height: 45%; /* 본문 높이의 35%까지만 차지 */
+    max-height: 70%; /* 본문 높이의 35%까지만 차지 */
     
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
+    margin-top: -20px;
 }
 
 .menu-image-container img {

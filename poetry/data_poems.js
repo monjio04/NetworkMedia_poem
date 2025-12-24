@@ -372,25 +372,49 @@ const poems = [
         // 2. 일러스트 이미지 설정
         objects: [
             {
-                src: "/image/shell.png",
+                src: "/image/fall.png",
                 startAt: 0, // 1연부터 등장
                 style: {
                     position: "absolute",
-                    top: "25%",   
-                    left: "70%",  
-                    width: "40%", 
+                    top: "75%",   
+                    left: "80%",  
+                    width: "85%", 
                     transform: "translate(-50%, -50%)", 
                     zIndex: "5"
                 }
             },
             {
-                src: "/image/shell2.png",
+                src: "/image/fall2.png",
+                startAt: 1, // 3연부터 등장
+                style: {
+                    position: "absolute",
+                    top: "60%",   
+                    left: "30%",  
+                    width: "65%", 
+                    transform: "translate(-50%, -50%)",
+                    zIndex: "10"
+                }
+            },
+            {
+                src: "/image/fall3.png",
                 startAt: 2, // 3연부터 등장
                 style: {
                     position: "absolute",
-                    top: "48%",   
-                    left: "40%",  
-                    width: "60%", 
+                    top: "30%",   
+                    left: "30%",  
+                    width: "35%", 
+                    transform: "translate(-50%, -50%)",
+                    zIndex: "10"
+                }
+            },
+            {
+                src: "/image/fall4.png",
+                startAt: 3, // 3연부터 등장
+                style: {
+                    position: "absolute",
+                    top: "40%",   
+                    left: "75%",  
+                    width: "35%", 
                     transform: "translate(-50%, -50%)",
                     zIndex: "10"
                 }
@@ -414,25 +438,26 @@ const poems = [
         // 2. 일러스트 이미지 설정
         objects: [
             {
-                src: "/image/shell.png",
-                startAt: 0, // 1연부터 등장
+                src: "/image/bab1.png",
+                startAt: 1, // 1연부터 등장
+                endAt:3,
                 style: {
                     position: "absolute",
-                    top: "25%",   
-                    left: "70%",  
-                    width: "40%", 
+                    top: "60%",   
+                    left: "50%",  
+                    width: "75%", 
                     transform: "translate(-50%, -50%)", 
                     zIndex: "5"
                 }
             },
             {
-                src: "/image/shell2.png",
-                startAt: 2, // 3연부터 등장
+                src: "/image/bab2.png",
+                startAt: 4, // 3연부터 등장
                 style: {
                     position: "absolute",
-                    top: "48%",   
-                    left: "40%",  
-                    width: "60%", 
+                    top: "62%",   
+                    left: "53%",  
+                    width: "75%", 
                     transform: "translate(-50%, -50%)",
                     zIndex: "10"
                 }

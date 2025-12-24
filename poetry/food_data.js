@@ -161,6 +161,24 @@ const menuDB = {
         },
         image: "/image/jeyuk.png" // 이미지 경로 확인 필요
     },
+    "된장찌개": {
+        tags: {
+            color: "Brown", 
+            weather: ["ALL"], 
+            season: ["All", "Winter"], 
+            exclude_season: []
+        },
+        image: "/image/doenjang.png" // 이미지 파일명 확인 필요
+    },
+    "소고기무국": {
+        tags: {
+            color: "White", // 맑은 국물
+            weather: ["Clear", "Snow", "Mist"], 
+            season: ["Winter", "Autumn", "All"], 
+            exclude_season: []
+        },
+        image: "/image/beef_radish.png" // 이미지 파일명 확인 필요
+    },
 
 };
 
@@ -355,5 +373,29 @@ const poemMap = {
                 }
             }
         ]
-    }
+    },
+    "어느 늦은 저녁 나는": {
+        theme_color: "White", // 흰 공기, 밥, 김(Steam)
+        is_color_mode: false, 
+        recommendations: [
+            { 
+                menu: "된장찌개", 
+                custom_ment: {
+                    default: "'밥을 먹어야지'라는 다짐처럼. 흰 쌀밥에 보글보글 끓는 구수한 된장찌개 한 숟가락이면, 다시 살아갈 힘이 생길 거예요.",
+                    weather: "마음속에 비가 내리는 저녁, 투박한 뚝배기에서 피어오르는 따뜻한 온기가 당신의 차가운 손을 잡아줄 겁니다.",
+                    season: "무언가 영원히 지나가 버린 것 같은 공허함. 어머니가 끓여주시던 그 깊은 맛으로 텅 빈 속을 든든히 채워보세요.",
+                    color: "짙은 갈색 국물이 조용히 끓고 있어요. 화려하진 않아도 늘 믿고 먹던 색, 어머니의 된장찌개 같은 저녁이에요."
+                }
+            },
+            { 
+                menu: "소고기무국",
+                custom_ment: {
+                    default: "김이 모락모락 나는 흰 쌀밥 옆엔 맑은 무국이 제격이죠. 헛헛한 마음을 자극 없이 부드럽게 감싸줄 거예요.",
+                    weather: "찬 바람에 마음이 시린 날, 달큰한 무와 고소한 소고기가 우러난 뜨끈한 국물이 속 깊은 위로를 건넵니다.",
+                    season: "가을 무의 시원함이 담긴 국 한 그릇. 말없이 등을 토닥여주던 어머니의 손길처럼, 가장 순하고 따뜻한 맛.",
+                    color: "투명한 국물 속에 무가 고요히 잠겨 있어요. 지나간 시간을 닮은 색, 어머니의 소고기무국 같은 저녁이에요."
+                }
+            }
+        ]
+    },
 };
