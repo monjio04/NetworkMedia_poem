@@ -475,6 +475,15 @@ function showResultModal(currentPoemTitle) {
         modal.style.display = 'flex';
         modal.style.opacity = '1';
         setTimeout(() => { fitTextToReceipt(); }, 10);
+
+        const backBtn = document.getElementById('backToMainBtn');
+        if (backBtn) {
+            backBtn.classList.add('visible');
+            
+            backBtn.onclick = function() {
+                window.location.href = "../index.html?mode=select"; 
+            };
+        }
     }
     isModalShown = true;
 }
@@ -607,7 +616,6 @@ function initWelcomeData() {
     localStorage.setItem('poem_receipt_archive', JSON.stringify(archive));
     localStorage.setItem('data_injected', 'true'); 
     
-    console.log("🎁 환영합니다! 초기 데이터가 지급되었습니다.");
 }
 
 initWelcomeData();

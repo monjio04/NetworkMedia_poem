@@ -7,14 +7,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const paperContainer = document.getElementById("paperContainer");
     const instructionText = document.querySelector(".instruction");
     const papers = document.querySelectorAll(".paper");
+
+    const archiveLink = document.querySelector(".archive-link");
     
     let isScattered = false;      
     let isTextShown = false;      
     
     const observerOptions = {
         root: null,
-        rootMargin: '0px',
-        threshold: 0.1 
+        rootMargin: '0px 0px -580px 0px',
+        threshold: 0.7
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
@@ -47,6 +49,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function triggerScatterEffect() {
         isScattered = true;
         paperContainer.classList.add("scattered");
+
+        setTimeout(() => {
+            if (archiveLink) {
+                archiveLink.classList.add("visible");
+            }
+        }, 1000);
     }
 
     const shuffledPoems = [...poems].sort(() => Math.random() - 0.5);
@@ -83,4 +91,20 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get('mode');
+
+    if (mode === 'select') {
+        const targetSection = document.querySelector('.bottom-section'); 
+        
+        if (targetSection) {
+            setTimeout(() => {
+                
+                targetSection.scrollIntoView({ behavior: 'auto', block: 'start' });
+
+            }, 100);
+        }
+    }
+
 });
