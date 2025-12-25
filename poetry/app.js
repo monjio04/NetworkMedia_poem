@@ -31,6 +31,12 @@ let currentState = {
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+
+    window.scrollTo(0, 0);
+
     // 1. 데이터 로드 및 환경 설정
     updateSeason();
     fetchWeather();
@@ -39,36 +45,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuWrapper = document.getElementById('menuWrapper');
     const introMsg = document.getElementById('intro-message');
     
-    // 애니메이션 시퀀스
+    // 🔒 [스크롤 방지 함수 정의]
+    const preventScroll = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    };
+
+    window.addEventListener('wheel', preventScroll, { passive: false });
+
+    // 애니메이션 시퀀스 시작
     setTimeout(() => { if(menuWrapper) menuWrapper.classList.add('slide-up'); }, 100);
     setTimeout(() => {
         if(menuWrapper) menuWrapper.classList.add('open-book');
+        
         setTimeout(() => {
             showTitleAndAuthor(); 
+            
             setTimeout(() => {
                 if (introMsg) introMsg.classList.add('visible'); 
+                
                 setTimeout(() => {
                     if (introMsg) introMsg.classList.remove('visible');
-                }, 3000); 
+                    
+                    setTimeout(() => {
+                        
+                        window.removeEventListener('wheel', preventScroll);
+                        window.addEventListener('wheel', handleScroll, { passive: false });
+
+                    }, 1000); // CSS의 transition: 1.0s 와 시간을 맞춤
+
+                }, 3000); // 메시지를 3초간 보여줌
             }, 2000); 
         }, 1500); 
     }, 2000); 
 
-    // 스크롤 이벤트 등록
-    window.addEventListener('wheel', handleScroll, { passive: false });
-
     if (isViewMode) {
         const backBtn = document.getElementById('backToArchiveBtn');
-        // HTML에 <img> 태그가 있어야만 작동합니다!
         if (backBtn) {
             backBtn.style.display = 'block'; 
-            backBtn.addEventListener('click', () => {
-                window.history.back(); // 뒤로 가기
-            });
+            backBtn.addEventListener('click', () => { window.history.back(); });
         }
     }
 });
-
 // ============================================================
 // 2. 시(Poem) 렌더링 및 연출 로직
 // ============================================================
@@ -538,10 +557,9 @@ function updateReceiptDateTime() {
     const hour = now.getHours();
     const minute = now.getMinutes();
     const totalMinutes = hour * 60 + minute;
-    let timeSlotText = "야식 메뉴";
-    if (totalMinutes >= 360 && totalMinutes <= 600) timeSlotText = "아침 메뉴";
-    else if (totalMinutes > 600 && totalMinutes <= 930) timeSlotText = "점심 메뉴";
-    else if (totalMinutes > 930 && totalMinutes <= 1320) timeSlotText = "저녁 메뉴";
+    let timeSlotText = "저녁 메뉴";
+    if (totalMinutes >= 360 && totalMinutes <= 660) timeSlotText = "아침 메뉴";
+    else if (totalMinutes > 660 && totalMinutes <= 990) timeSlotText = "점심 메뉴";
 
     if (dateEl) { dateEl.innerHTML = `${year}/${month}/${day} <img src="${weatherSrc}" class="weather-icon-img" alt="${currentWeather}">`; }
     if (timeSlotEl) { timeSlotEl.innerText = timeSlotText; }

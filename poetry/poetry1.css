@@ -57,7 +57,10 @@ body {
     justify-content: center; 
     align-items: center; 
     height: 100vh; 
-    background-color: #333; 
+    
+    background-color: #333 !important;      /* 배경색은 어둡게 유지 */
+    background-image: none !important;      /* 배경 이미지는 강제로 제거 */
+    
     overflow: hidden; 
 }
 
@@ -69,18 +72,18 @@ body {
     height: 1024px; 
     position: relative; 
     overflow: hidden; 
-    box-shadow: 0 0 50px rgba(0,0,0,0.5); 
 }
 
 .wood-background { 
     width: 100%; 
-    height: 100%; 
-    position: absolute; 
+    height: 100vh;      /* 100% 대신 100vh (보이는 화면 전체 높이) */
+    
+    position: fixed;    /* [핵심] absolute -> fixed 로 변경 */
+    
     top: 0; 
     left: 0; 
-    z-index: 0; 
+    z-index: -1;        /* 0보다 -1을 추천 (확실하게 맨 뒤로 보냄) */
     
-    /* [주의] CSS 파일이 css 폴더 안에 있다면 상위 폴더(../)로 나가야 합니다. */
     background: url('../image/bg-wood.png') no-repeat center center; 
     background-size: cover; 
 }
@@ -130,6 +133,8 @@ body {
     background: url('../image/paper-a.png') no-repeat center center; 
     background-size: cover; 
     background-color: #F1E8DC;
+
+    box-shadow: inset -15px 0 30px -15px rgba(0, 0, 0, 0.4);
     
     display: flex; 
     flex-direction: column; 
@@ -147,6 +152,7 @@ body {
     z-index: 10;
     transition: transform 2.5s cubic-bezier(0.25, 1, 0.5, 1);
     
+    box-shadow: inset 15px 0 30px -15px rgba(0, 0, 0, 0.4);
     background: url('../image/paper-b.png') no-repeat center center; 
     background-size: cover; 
     background-color: #D9C7AE;
@@ -337,7 +343,7 @@ body {
 
 #backToArchiveBtn {
     position: fixed;   /* 화면에 고정 */
-    left: 85px;        /* 왼쪽에서 20px 떨어짐 */
+    left: 50px;        /* 왼쪽에서 20px 떨어짐 */
     top: 7%;          /* 높이 중앙 */
     transform: translateY(-50%); /* 정확한 중앙 정렬 */
     width: 80px;       /* 크기 조절 (필요에 따라 변경) */
@@ -350,3 +356,4 @@ body {
 #backToArchiveBtn:hover {
     opacity: 1;        /* 마우스 올리면 진해짐 */
 }
+
