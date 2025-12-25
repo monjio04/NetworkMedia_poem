@@ -242,25 +242,29 @@ body {
 }
 
 @media screen and (min-width: 769px) {
+
     .paper-container.scattered .paper:nth-child(1) {
-        transform: translate(calc(-90px + var(--x, 0px)), calc(0px + var(--y, 0px))) rotate(-30deg);
-        z-index: 2;
+        transform: translate(calc(-220px + var(--x, 0px)), calc(50px + var(--y, 0px))) rotate(-40deg);
+        z-index: 1; 
     }
     .paper-container.scattered .paper:nth-child(2) {
-        transform: translate(calc(-45px + var(--x, 0px)), calc(40px + var(--y, 0px))) rotate(-15deg);
-        z-index: 3;
-    }
-    .paper-container.scattered .paper:nth-child(3) {
-        transform: translate(calc(0px + var(--x, 0px)), calc(60px + var(--y, 0px))) rotate(0deg);
-        z-index: 4;
-    }
-    .paper-container.scattered .paper:nth-child(4) {
-        transform: translate(calc(45px + var(--x, 0px)), calc(40px + var(--y, 0px))) rotate(15deg);
-        z-index: 3;
-    }
-    .paper-container.scattered .paper:nth-child(5) {
-        transform: translate(calc(90px + var(--x, 0px)), calc(0px + var(--y, 0px))) rotate(30deg);
+        transform: translate(calc(-110px + var(--x, 0px)), calc(10px + var(--y, 0px))) rotate(-20deg);
         z-index: 2;
+    }
+
+    .paper-container.scattered .paper:nth-child(3) {
+        transform: translate(calc(0px + var(--x, 0px)), calc(-20px + var(--y, 0px))) rotate(0deg);
+        z-index: 5; 
+    }
+
+    .paper-container.scattered .paper:nth-child(4) {
+        transform: translate(calc(110px + var(--x, 0px)), calc(10px + var(--y, 0px))) rotate(20deg);
+        z-index: 2;
+    }
+
+    .paper-container.scattered .paper:nth-child(5) {
+        transform: translate(calc(220px + var(--x, 0px)), calc(50px + var(--y, 0px))) rotate(40deg);
+        z-index: 1;
     }
 }
 
