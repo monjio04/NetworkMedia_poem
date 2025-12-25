@@ -1,7 +1,5 @@
-/* 폰트 로드 */
 @import url('https://fonts.googleapis.com/css2?family=Libre+Barcode+39&family=Noto+Sans+KR:wght@400;700&display=swap');
 
-/* 모달 배경 */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -14,23 +12,20 @@
 }
 
 /* =========================================
-   1. 영수증 전체 레이아웃 (가장 중요)
+   1. 영수증 전체 레이아웃
    ========================================= */
 .receipt {
-    width: 480px; /* 적당한 너비 */
+    width: 480px; 
     background-color: #fff;
     padding: 20px 25px 50px 25px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     position: relative;
     
-    /* [핵심] 높이를 화면의 80%로 고정 (넘치지 않게 함) */
     height: 90vh; 
-    max-height: 750px; /* 너무 길어지지 않게 제한 */
+    max-height: 750px; 
     
-    /* Flex 구조 설정 */
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; 상-중-하 배치 */
     
     box-sizing: border-box;
 }
@@ -51,16 +46,14 @@
 }
 
 /* =========================================
-   2. 고정 영역 (헤더 & 푸터)
+   2. 고정 영역 
    ========================================= */
 
-/* 헤더와 푸터는 절대 찌그러지지 않게 고정 */
 .receipt-header-styled, 
 .receipt-footer {
     flex-shrink: 0; 
 }
 
-/* 날짜 및 시간대 정보 */
 .receipt-info-row {
     display: flex;
     justify-content: space-between;
@@ -73,19 +66,17 @@
 }
 .time-icon { margin-left: 8px; font-size: 1.2em; }
 
-/* 구분선 이미지 */
 .deco-line {
     width: 100%;
     height: auto;
-    margin: 7px 0; /* 간격 조금 줄임 */
+    margin: 7px 0; 
     display: block;
     opacity: 0.9;
 }
 
-/* 바코드 (푸터) */
 .barcode {
     font-family: 'Libre Barcode 39', cursive;
-    font-size: 3.5rem; /* 크기 살짝 조정 */
+    font-size: 3.5rem;
     margin-top: 15px;
     margin-bottom: -8px;
     transform: scaleY(1.1);
@@ -110,14 +101,12 @@
     display: flex;
     flex-direction: column;
     
-    /* 👇 내용물을 그 긴 공간의 '정중앙'에 예쁘게 모아줌 */
     justify-content: center; 
     align-items: center;
     
-    margin: 10px 0; /* 위아래 간격 */
+    margin: 10px 0; 
 }
 
-/* 메뉴 이름 */
 .menu-name {
     font-family: 'RIDIBatang', serif;
     font-size: 22px;
@@ -126,10 +115,9 @@
     font-weight: normal;
     color: #000;
     text-align: center;
-    flex-shrink: 0; /* 이름은 줄어들지 않음 */
+    flex-shrink: 0; 
 }
 
-/* 이미지 컨테이너 (공간 부족 시 줄어듦) */
 .menu-image-container {
     width: 300px;
     height: 200px;
@@ -148,36 +136,31 @@
     object-fit: contain;
 }
 
-/* 설명 텍스트 (넘치면 JS가 줄여줄 대상) */
 .menu-desc {
     font-family: 'RIDIBatang', serif;
-    font-size: 1rem; /* 초기 크기 */
+    font-size: 1rem; 
     line-height: 1.5;
     color: #444;
     text-align: center;
     word-break: keep-all;
     
-    /* 안전장치: JS 실패 시 5줄까지만 보이고 ... 처리 */
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
     
-    transition: font-size 0.1s; /* 부드러운 크기 조절 */
+    transition: font-size 0.1s; 
 }
 
-/* [추가] 제목 이미지 스타일 */
 .title-image {
-    display: block; /* 블록 요소로 만들어 중앙 정렬 */
-    margin: 30px auto 10px auto; /* 상하단 여백, 좌우 중앙 정렬 */
-    max-width: 100%; /* 부모(receipt) 너비를 넘지 않도록 */
-    height: auto;    /* 높이는 비율에 맞게 자동 조절 */
+    display: block; 
+    margin: 30px auto 10px auto;
+    max-width: 100%; 
+    height: auto;    
     
-    /* 필요 시 크기 수동 지정 */
-    /* width: 300px; */ 
+
 }
 
-/* 날씨 아이콘 이미지 */
 .weather-icon-img {
     width: 20px; height: 20px;
     object-fit: contain;

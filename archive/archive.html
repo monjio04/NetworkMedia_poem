@@ -4,27 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>오늘의 시메추 - 보관함</title>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
     <link rel="stylesheet" href="archive.css"> 
 </head>
 <body>
 
     <a href="../index.html" class="back-btn">
-        <img src="/image/arrow.png" alt="뒤로가기">  <span>메인 화면</span> </a>
+        <img src="../image/arrow.png" alt="뒤로가기"> <span>메인 화면</span> 
+    </a>
        
     <div class="archive-container">
-        
-        
         <div id="plank-wrapper"></div>
     </div>
 
-    <div id="receipt-modal" class="modal-overlay">
+        <div id="receipt-modal" class="modal-overlay">
         <div class="modal-receipt">
             <div class="pin-large"></div>
             <button class="close-btn" onclick="closeModal()">×</button>
 
-            <div class="wongoji-header large-header" id="modal-title-area">
-                </div>
+            <div class="wongoji-header large-header" id="modal-title-area"></div>
+
             <div class="date-info-row large-date" id="modal-date-row">
                 <span id="modal-date"></span>
                 <span id="modal-time"></span>
@@ -42,11 +42,11 @@
                 <div class="barcode large-barcode" id="modal-barcode">CODE</div>
                 <p class="click-guide">바코드를 누르면 시를 다시 감상할 수 있습니다</p>
             </div>
+            
         </div>
     </div>
 
     <script src="archive.js"></script>
 
-        
 </body>
 </html>

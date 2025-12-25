@@ -155,11 +155,11 @@ const menuDB = {
     "제육볶음": {
         tags: {
             color: "Red", 
-            weather: ["Rain", "Snow", "Clouds"], // 흐린 날 매운 거
+            weather: ["Rain", "Snow", "Clouds"],
             season: ["Autumn", "Winter", "All"], 
             exclude_season: []
         },
-        image: "/image/jeyuk.png" // 이미지 경로 확인 필요
+        image: "/image/jeyuk.png" 
     },
     "된장찌개": {
         tags: {
@@ -168,25 +168,25 @@ const menuDB = {
             season: ["All", "Winter"], 
             exclude_season: []
         },
-        image: "/image/doenjang.png" // 이미지 파일명 확인 필요
+        image: "/image/doenjang.png" 
     },
     "소고기무국": {
         tags: {
-            color: "White", // 맑은 국물
+            color: "White", 
             weather: ["Clear", "Snow", "Mist"], 
             season: ["Winter", "Autumn", "All"], 
             exclude_season: []
         },
-        image: "/image/beef_radish.png" // 이미지 파일명 확인 필요
+        image: "/image/beef_radish.png"
     },
     "삼계탕": {
         tags: {
             color: "White", 
-            weather: ["Rain", "Snow", "Mist", "Clouds"], // 흐리거나 추운 날
-            season: ["Summer", "Winter", "All"],          // 복날(여름) + 겨울 보양
+            weather: ["Rain", "Snow", "Mist", "Clouds"], 
+            season: ["Summer", "Winter", "All"],          
             exclude_season: []
         },
-        image: "/image/samgyetang.png" // 이미지 파일명 확인 필요
+        image: "/image/samgyetang.png"
     },
 
 };
@@ -392,7 +392,7 @@ const poemMap = {
     
     
     "어느 늦은 저녁 나는": {
-        theme_color: "White", // 흰 공기, 밥, 김(Steam)
+        theme_color: "White", 
         is_color_mode: false, 
         poem_description: "이 시는 늦은 저녁, 김 오르는 밥을 바라보다가 지나가버린 시간과 다시 살아가야 할 오늘을 조용히 받아들이는 순간을 담고 있어요.",
         recommendations: [

@@ -2,9 +2,8 @@
 // 1. 전역 설정 및 초기화
 // ============================================================
 
-// URL 파라미터 확인 (예: ?id=2)
+// URL 파라미터 확인
 const urlParams = new URLSearchParams(window.location.search);
-// ⭐ [핵심] 여기에 현재 시의 ID가 이미 있습니다!
 const poemId = parseInt(urlParams.get('id')) || 1; 
 
 const isViewMode = urlParams.get('viewMode') === 'true';
@@ -20,11 +19,9 @@ if (currentPoemIndex === -1) {
 let currentStanzaIndex = 0;
 let isAnimating = false;
 let currentState = { 
-    weather: "Clear", // 기본값
-    season: "Spring"  // 기본값
+    weather: "Clear", 
+    season: "Spring"  
 };
-
-// (menuIdMap은 필요 없어서 삭제했습니다!)
 
 // ============================================================
 // 페이지 로드 시 실행
@@ -37,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.scrollTo(0, 0);
 
-    // 1. 데이터 로드 및 환경 설정
+    // 데이터 로드 및 환경 설정
     updateSeason();
     fetchWeather();
     loadPoemData(currentPoemIndex);
@@ -45,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuWrapper = document.getElementById('menuWrapper');
     const introMsg = document.getElementById('intro-message');
     
-    // 🔒 [스크롤 방지 함수 정의]
     const preventScroll = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -73,9 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.removeEventListener('wheel', preventScroll);
                         window.addEventListener('wheel', handleScroll, { passive: false });
 
-                    }, 1000); // CSS의 transition: 1.0s 와 시간을 맞춤
+                    }, 1000); 
 
-                }, 3000); // 메시지를 3초간 보여줌
+                }, 3000); 
             }, 2000); 
         }, 1500); 
     }, 2000); 
@@ -276,7 +272,7 @@ function updateSeason() {
     else if (month >= 6 && month <= 8) currentState.season = "Summer";
     else if (month >= 9 && month <= 11) currentState.season = "Autumn";
     else currentState.season = "Winter";
-    console.log(`🌸 현재 계절: ${currentState.season}`);
+    console.log(`현재 계절: ${currentState.season}`);
 }
 
 function fetchWeather() {
@@ -324,31 +320,28 @@ let isModalShown = false;
 function recommendMenu(poemTitle) {
     const poemInfo = poemMap[poemTitle];
     if (!poemInfo) {
-        console.error(`❌ 에러: data_poems.js에 '${poemTitle}' 정보가 없습니다.`);
+        console.error(`에러: data_poems.js에 '${poemTitle}' 정보가 없습니다.`);
         return null;
     }
 
     let candidates = [];
     const { weather, season } = currentState; // 현재 날씨, 계절
 
-    // 1. 후보군 선정 로직 (기존과 동일하지만, source 속성 정리)
+    // 후보군 선정 로직
     if (poemInfo.is_color_mode && poemInfo.theme_color) {
-        // [색깔 모드]
+        //색깔 모드
         Object.keys(menuDB).forEach(menuName => {
             const mData = menuDB[menuName];
             if (mData.tags.color === poemInfo.theme_color) {
-                // 색깔 모드는 poemMap에 멘트가 없으므로 임시 default 멘트 사용
-                // (필요하다면 poemMap에 color_mode용 멘트도 추가 가능)
                 candidates.push({ 
                     name: menuName, 
                     ...mData, 
-                    custom_ment_obj: { default: "이 시의 색깔과 꼭 닮은 메뉴예요." }, // 임시 객체
+                    custom_ment_obj: { default: "이 시의 색깔과 꼭 닮은 메뉴예요." },
                     source: "color_mode" 
                 });
             }
         });
     } else {
-        // [일반 모드] poemMap의 recommendations 기반
         if (poemInfo.recommendations) {
             poemInfo.recommendations.forEach(item => {
                 const mData = menuDB[item.menu];
@@ -356,7 +349,6 @@ function recommendMenu(poemTitle) {
                     candidates.push({ 
                         name: item.menu, 
                         ...mData, 
-                        // ⭐ [핵심] custom_ment 객체를 그대로 가져옴
                         custom_ment_obj: item.custom_ment, 
                         source: "normal_mode"
                     });
@@ -365,7 +357,7 @@ function recommendMenu(poemTitle) {
         }
     }
 
-    // 2. 점수 계산 (기존 로직 유지)
+    // 점수 계산
     let scoredCandidates = [];
     candidates.forEach(candidate => {
         if (candidate.tags.exclude_season && candidate.tags.exclude_season.includes(season)) return;
@@ -395,7 +387,7 @@ function recommendMenu(poemTitle) {
 
     if (scoredCandidates.length === 0) return { name: "추천 메뉴 없음", desc: "조건에 맞는 메뉴를 찾지 못했어요.", image: "" };
 
-    // 3. 랜덤 추첨 (기존 로직 유지)
+    // 랜덤 추첨
     const totalScore = scoredCandidates.reduce((acc, cur) => acc + cur.score, 0);
     let randomNum = Math.random() * totalScore;
     let selectedMenu = null;
@@ -405,9 +397,7 @@ function recommendMenu(poemTitle) {
         if (randomNum <= 0) { selectedMenu = item; break; }
     }
 
-    // ⭐ [핵심 변경] 최종 멘트 결정 로직
-    // poemMap에서 가져온 custom_ment_obj 안에서 상황에 맞는 멘트를 꺼냄
-    let finalDesc = selectedMenu.custom_ment_obj.default; // 기본값
+    let finalDesc = selectedMenu.custom_ment_obj.default; 
 
     if (selectedMenu.reason === "weather" && selectedMenu.custom_ment_obj.weather) {
         finalDesc = selectedMenu.custom_ment_obj.weather;
@@ -434,7 +424,7 @@ function getCurrentMealTime() {
     return "dinner";                                        
 }
 
-// [핵심 수정] ID를 전역 변수에서 바로 가져오는 깔끔한 저장 함수
+//ID를 전역 변수에서 바로 가져옴
 function saveReceiptToArchive(menuData, dateString) {
     let archive = JSON.parse(localStorage.getItem('poem_receipt_archive')) || {};
     if (!archive[dateString]) archive[dateString] = {};
@@ -445,12 +435,10 @@ function saveReceiptToArchive(menuData, dateString) {
     if (minutes >= 360 && minutes <= 660) mealTime = "morning";
     else if (minutes > 660 && minutes <= 960) mealTime = "lunch";
 
-    // ⭐ [여기!] 맨 위에서 선언한 'poemId'를 그냥 넣습니다.
-    // 지도 찾고 자시고 할 필요가 없습니다. 현재 페이지가 곧 그 시니까요!
     const savedId = poemId; 
 
     archive[dateString][mealTime] = {
-        id: savedId,           // 이렇게 하면 100% 정확한 ID가 저장됩니다.
+        id: savedId,          
         name: menuData.name,
         desc: menuData.desc,
         image: menuData.image,
@@ -458,12 +446,12 @@ function saveReceiptToArchive(menuData, dateString) {
     };
 
     localStorage.setItem('poem_receipt_archive', JSON.stringify(archive));
-    console.log("💾 저장 성공 (ID 포함):", archive[dateString][mealTime]); 
+    console.log("저장 성공 (ID 포함):", archive[dateString][mealTime]); 
 }
 
 function showResultModal(currentPoemTitle) {
     if (isModalShown) return;
-    console.log(`🧾 영수증 발행: [${currentPoemTitle}]`);
+    console.log(`영수증 발행: [${currentPoemTitle}]`);
 
     const result = recommendMenu(currentPoemTitle);
     if(!result) return;
@@ -481,7 +469,6 @@ function showResultModal(currentPoemTitle) {
     
     const today = new Date().toISOString().split('T')[0]; 
     
-    // 저장 함수 호출 (ID는 함수 안에서 알아서 처리함)
     saveReceiptToArchive(result, today);
     
     if(modal) {
@@ -565,22 +552,17 @@ function updateReceiptDateTime() {
     if (timeSlotEl) { timeSlotEl.innerText = timeSlotText; }
 }
 
+//더미 데이터
 function initWelcomeData() {
-    // 1. "나 이미 선물 받았나?" 확인 (안전 장치)
     const hasInjected = localStorage.getItem('data_injected');
     
-    // 2. 이미 받았으면(true) 아무것도 하지 않고 함수 종료! (기존 데이터 보호)
     if (hasInjected) {
-        console.log("✅ 기존 방문자입니다. 데이터 초기화를 건너뜁니다.");
+        console.log("기존 방문자입니다. 데이터 초기화를 건너뜁니다.");
         return; 
     }
 
-    // ----------------------------------------------------
-    // 🎁 처음 온 사람에게만 실행되는 로직
-    // ----------------------------------------------------
     let archive = {}; 
 
-    // 📅 12월 23일 데이터
     archive["2025-12-23"] = {
         "morning": {
             id: 1,
@@ -605,7 +587,6 @@ function initWelcomeData() {
         }
     };
 
-    // 📅 12월 24일 데이터
     archive["2025-12-24"] = {
         "lunch": {
             id: 4,
@@ -623,12 +604,10 @@ function initWelcomeData() {
         }
     };
 
-    // 3. 데이터 저장 및 도장 찍기
     localStorage.setItem('poem_receipt_archive', JSON.stringify(archive));
-    localStorage.setItem('data_injected', 'true'); // "선물 받음" 도장 꾹!
+    localStorage.setItem('data_injected', 'true'); 
     
     console.log("🎁 환영합니다! 초기 데이터가 지급되었습니다.");
 }
 
-// 실행
 initWelcomeData();

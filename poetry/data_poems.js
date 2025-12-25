@@ -1,7 +1,5 @@
 const poems = [
-    // ======================================================
-    // [1번 시] 조개껍질
-    // ======================================================
+
     {
         id: 1,
         title: "조개껍질",
@@ -14,11 +12,10 @@ const poems = [
             "아롱아롱 조개 껍데기\n나처럼 그리워 하네\n물 소리 바닷물 소리"
         ],
         
-        // 2. 일러스트 이미지 설정
         objects: [
             {
                 src: "/image/shell.png",
-                startAt: 0, // 1연부터 등장
+                startAt: 0, 
                 style: {
                     position: "absolute",
                     top: "25%",   
@@ -30,7 +27,7 @@ const poems = [
             },
             {
                 src: "/image/shell2.png",
-                startAt: 2, // 3연부터 등장
+                startAt: 2, 
                 style: {
                     position: "absolute",
                     top: "48%",   
@@ -41,9 +38,9 @@ const poems = [
                 }
             },
             {
-                type: "video",       // ✨ 핵심: 이것은 비디오다! 라고 알려줌
+                type: "video",    
                 src: "/video/ocean.mp4",
-                startAt: 3,          // ✨ 핵심: 4연(index 3)부터 등장
+                startAt: 3,       
                 style: {
                     position: "absolute",
                     bottom: "0",
@@ -52,8 +49,7 @@ const poems = [
                     height: "45%",
                     objectFit: "cover",
                     mixBlendMode: "multiply",
-                    //opacity: "0.8",
-                    zIndex: "1",      // 이미지가 가려지지 않게 뒤로 배치
+                    zIndex: "1",     
                 
                     "mask-image": "linear-gradient(to top, black 85%, transparent 100%)",
                     "-webkit-mask-image": "linear-gradient(to top, black 85%, transparent 100%)"
@@ -62,10 +58,6 @@ const poems = [
             
         ]
     },
-
-    // ======================================================
-    // [2번 시] 레몬과 들뜨던 청춘을
-    // ======================================================
     {
         id: 2,
         title: "레몬과 들뜨던 청춘을",
@@ -85,7 +77,7 @@ const poems = [
         
         objects: [
             {
-                src: "/image/lemon1.png", // 파일 필요
+                src: "/image/lemon1.png",
                 startAt: 0,
                 endAt: 4,
                 style: {
@@ -98,7 +90,7 @@ const poems = [
                 }
             },
             {
-                src: "/image/lemon2.png", // 파일 필요
+                src: "/image/lemon2.png", 
                 startAt: 2,
                 endAt: 4,
                 style: {
@@ -111,7 +103,7 @@ const poems = [
                 }
             },
             {
-                src: "/image/lemon3.png", // 파일 필요
+                src: "/image/lemon3.png", 
                 startAt: 4,
                 endAt: 4,
                 style: {
@@ -124,7 +116,7 @@ const poems = [
                 }
             },
             {
-                src: "/image/lemon4.png", // 파일 필요
+                src: "/image/lemon4.png", 
                 startAt: 5,
                 endAt: 6,
                 style: {
@@ -152,7 +144,6 @@ const poems = [
             "대구 알처럼 붉은빛이,\n당신 볼에도 여전합니까"
         ],
         
-        // 2. 일러스트 이미지 설정
         objects: [
             {
                 src: "/image/red1.png",
@@ -221,11 +212,10 @@ const poems = [
             "밖에는 어데서 물새가 우는데\n토방에선 햇콩두부가 고요히 숨이 들어갔다"
         ],
         
-        // 2. 일러스트 이미지 설정
         objects: [
             {
                 src: "/image/kimchi1.png",
-                startAt: 0, // 1연부터 등장
+                startAt: 0, 
                 style: {
                     position: "absolute",
                     top: "70%",   
@@ -237,7 +227,7 @@ const poems = [
             },
             {
                 src: "/image/kimchi2.png",
-                startAt: 1, // 3연부터 등장
+                startAt: 1, 
                 style: {
                     position: "absolute",
                     top: "27%",   
@@ -249,7 +239,7 @@ const poems = [
             },
             {
                 src: "/image/kimchi3.png",
-                startAt: 2, // 3연부터 등장
+                startAt: 2, 
                 style: {
                     position: "absolute",
                     top: "45%",   
@@ -272,11 +262,10 @@ const poems = [
             "내 생도 한번쯤은\n감칠맛 나게 뜯기고 싶다."
         ],
         
-        // 2. 일러스트 이미지 설정
         objects: [
             {
                 src: "/image/chicken.png",
-                startAt: 0, // 1연부터 등장
+                startAt: 0,
                 style: {
                     position: "absolute",
                     top: "50%",   
@@ -302,11 +291,10 @@ const poems = [
             "화가 날 때는\n감자를 먹으면서\n모난 마음을 달래야겠다"
         ],
         
-        // 2. 일러스트 이미지 설정
         objects: [
             {
                 src: "/image/potato.png",
-                startAt: 0, // 1연부터 등장
+                startAt: 0, 
                 endAt:2,
                 style: {
                     position: "absolute",
@@ -319,7 +307,7 @@ const poems = [
             },
             {
                 src: "/image/potato2.png",
-                startAt: 2, // 3연부터 등장
+                startAt: 2, 
                 endAt:2,
                 style: {
                     position: "absolute",
@@ -332,7 +320,7 @@ const poems = [
             },
             {
                 src: "/image/potato3.png",
-                startAt: 3, // 3연부터 등장
+                startAt: 3,
                 style: {
                     position: "absolute",
                     top: "30%",   
@@ -344,7 +332,7 @@ const poems = [
             },
             {
                 src: "/image/potato4.png",
-                startAt: 4, // 3연부터 등장
+                startAt: 4, 
                 style: {
                     position: "absolute",
                     top: "60%",   
@@ -369,11 +357,10 @@ const poems = [
             "그럴 때 속을 달래는 찬물의 빛나는\n사랑도 되고"
         ],
         
-        // 2. 일러스트 이미지 설정
         objects: [
             {
                 src: "/image/fall.png",
-                startAt: 0, // 1연부터 등장
+                startAt: 0, 
                 style: {
                     position: "absolute",
                     top: "75%",   
@@ -385,7 +372,7 @@ const poems = [
             },
             {
                 src: "/image/fall2.png",
-                startAt: 1, // 3연부터 등장
+                startAt: 1, 
                 style: {
                     position: "absolute",
                     top: "60%",   
@@ -397,7 +384,7 @@ const poems = [
             },
             {
                 src: "/image/fall3.png",
-                startAt: 2, // 3연부터 등장
+                startAt: 2, 
                 style: {
                     position: "absolute",
                     top: "30%",   
@@ -409,7 +396,7 @@ const poems = [
             },
             {
                 src: "/image/fall4.png",
-                startAt: 3, // 3연부터 등장
+                startAt: 3, 
                 style: {
                     position: "absolute",
                     top: "40%",   
@@ -435,11 +422,10 @@ const poems = [
             "나는 밥을 먹었다"
         ],
         
-        // 2. 일러스트 이미지 설정
         objects: [
             {
                 src: "/image/bab1.png",
-                startAt: 1, // 1연부터 등장
+                startAt: 1,
                 endAt:3,
                 style: {
                     position: "absolute",
@@ -452,7 +438,7 @@ const poems = [
             },
             {
                 src: "/image/bab2.png",
-                startAt: 4, // 3연부터 등장
+                startAt: 4, 
                 style: {
                     position: "absolute",
                     top: "62%",   

@@ -1,6 +1,4 @@
-/* main.css */
 
-/* 1. 기본 설정 */
 html, body {
     margin: 0;
     padding: 0;
@@ -15,57 +13,58 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 120vh; 
-    overflow-x: hidden;
-    overflow-y: auto; 
+    min-height: 120vh;
+    overflow-x: hidden; 
+    overflow-y: auto;
 }
 
-/* 2. 상단 섹션 (Figma 레이아웃 반영) */
 .top-section-wrapper {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 59px; /* 가장 높은 요소 기준 시작점 */
+    margin-top: 59px;
+    padding: 0 20px; 
+    box-sizing: border-box; 
 }
 
 .top-section {
     position: relative;
-    width: 1440px; /* Figma 기준 너비 */
-    height: 702px; /* 가장 긴 선 높이 기준 */
+    width: 100%;
+    max-width: 1440px;
+    height: 702px;
 }
 
-/* 좌측 긴 세로선 (X: 322, Y: 202, H: 702) */
 .top-section::before {
     content: '';
     position: absolute;
-    top: calc(202px - 59px); /* 래퍼 시작점(59px) 기준 상대 위치 */
-    left: 322px;
+    top: calc(202px - 59px);
+    left: 22%; 
     width: 1px;
     height: 702px;
     background-color: #ccc;
+    transition: left 0.3s ease;
 }
 
-/* 우측 긴 세로선 (X: 1118, Y: 59, H: 702) */
 .top-section::after {
     content: '';
     position: absolute;
-    top: 0; /* 래퍼 시작점과 동일 */
-    left: 1118px;
+    top: 0;
+    left: 78%; 
     width: 1px;
     height: 702px;
     background-color: #ccc;
+    transition: left 0.3s ease;
 }
 
-/* 중앙 컨텐츠 그룹 */
 .content-group {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: absolute;
-    /* 박스 중앙 기준(X: 674 + 46)으로 정렬 */
     left: 50%;
     transform: translateX(-50%);
-    top: 100px; /* 적절한 상단 여백 설정 */
+    top: 100px;
+    width: 100%;
 }
 
 .intro-text {
@@ -75,9 +74,11 @@ body {
     letter-spacing: 0.3em;
     font-weight: 500;
     margin-bottom: 30px;
+    
+    word-break: keep-all; 
+    padding: 0 10px;
 }
 
-/* 중앙 짧은 세로선 */
 .short-line {
     width: 1px;
     height: 50px;
@@ -85,96 +86,69 @@ body {
     margin-bottom: 30px;
 }
 
-/* "시메추" 로고 박스 (선 두껍게, 교차점 분리) */
 .logo-box {
     font-family: 'Ridibatang', serif;
     font-size: 86px;
     color: #000;
     position: relative;
-    width: 96px; /* 선 두께 고려하여 폭 미세 조정 */
-    
-    /* 중요: 상하 패딩을 제거하여 글자의 가로선이 박스 끝에 딱 붙도록 함 */
-    padding: 0 10px; 
-    
+    width: 96px;
+    padding: 0 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: transform 0.3s ease; 
 }
 
-/* 박스 좌우 세로선 (두께 2px) */
-.logo-box::before,
-.logo-box::after {
+.logo-box::before, .logo-box::after {
     content: '';
     position: absolute;
-    width: 2px; 
+    width: 2px;
     background-color: #888;
-    
-    /* 핵심: 위아래를 8px씩 띄워서 가로선과 닿지 않게 함 (교차점 분리) */
-    top: 8px; 
-    bottom: 8px; 
+    top: 8px;
+    bottom: 8px;
 }
 .logo-box::before { left: 0; }
 .logo-box::after { right: 0; }
 
-/* 글자 공통 스타일 */
 .char, .char-last {
     width: 100%;
     text-align: center;
     line-height: 1;
     position: relative;
-    
-    /* 글자 위아래 여백을 여기서 줌 */
-    padding: 15px 0; 
+    padding: 15px 0;
 }
 
-/* 1. 맨 위 가로선 (첫 번째 글자 '시' 위에 생성) */
 .logo-box .char:first-child::before {
     content: '';
     position: absolute;
-    top: 0; /* 맨 위 */
-    
-    /* 핵심: 좌우를 5px씩 띄워서 세로선과 닿지 않게 함 */
-    left: 5px; 
-    right: 5px; 
-    
+    top: 0;
+    left: 5px;
+    right: 5px;
     height: 2px;
     background-color: #888;
 }
 
-/* 2. 중간 및 맨 아래 가로선 (모든 글자 아래에 생성) */
-/* .char-last 클래스 대신 그냥 모든 .char, .char-last에 적용되도록 함 */
 .char::after, .char-last::after {
     content: '';
     position: absolute;
-    bottom: 0; /* 글자 아래 */
-    
-    /* 핵심: 좌우를 5px씩 띄워서 세로선과 닿지 않게 함 */
-    left: 5px; 
-    right: 5px; 
-    
+    bottom: 0;
+    left: 5px;
+    right: 5px;
     height: 2px;
     background-color: #888;
 }
 
-
-
-/* 3. 하단 섹션 수정 */
 .bottom-section {
-    /* 상단 섹션 높이 약 900px (선 끝나는 지점)
-       피그마 텍스트 위치 Y=1260
-       둘 사이의 자연스러운 간격을 위해 margin-top 조정 
-       (기존 250px -> 180px 정도로 줄여서 선 밑에 바로 따라오도록 함)
-    */
-    margin-top: 180px; 
-    padding-bottom: 100px; 
+    margin-top: 180px;
+    padding-bottom: 100px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
+    overflow: hidden; 
 }
 
-/* 안내 문구 스타일 */
 .instruction {
     font-family: 'Pretendard', sans-serif;
     font-size: 24px;
@@ -182,29 +156,27 @@ body {
     color: #333;
     letter-spacing: -0.02em;
     z-index: 10;
-    
-    /* 텍스트와 아래 종이 뭉치 사이의 간격 */
-    margin-bottom: 150px; 
-
-    opacity: 0; 
-    transition: opacity 2s ease; 
+    margin-bottom: 150px;
+    opacity: 0;
+    transition: opacity 2s ease;
+    text-align: center;
+    padding: 0 20px;
 }
-/* 자바스크립트가 붙여줄 클래스 */
+
 .instruction.fade-in {
-    opacity: 1; /* 보이게 됨 */
+    opacity: 1;
 }
 
-/* 종이 컨테이너 */
 .paper-container {
     position: relative;
-    width: 600px; 
+    width: 600px;
     height: 400px;
     display: flex;
     justify-content: center;
-    align-items: flex-start; 
+    align-items: flex-start;
+    max-width: 100%; 
 }
 
-/* 종이 기본 스타일 */
 .paper {
     width: 223px;
     height: 305px;
@@ -213,117 +185,113 @@ body {
     box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.08);
     border-radius: 2px;
     cursor: pointer;
-    
     opacity: 0;
-    transform: translateY(400px) rotate(0deg); 
-    
+    transform: translateY(400px) rotate(0deg);
     transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s ease-out;
+    
+    max-width: 80vw; 
+    max-height: calc(80vw * 1.36); 
 }
 
-/* 애니메이션 상태 */
 .paper-container.scattered .paper {
     opacity: 1;
 }
 
-/* 종이 위치 재배치: 동그랗게 모인 꽃잎 형태 
-   - X축 간격(translate X)을 줄여서 가운데로 모으고
-   - 회전각(rotate)을 조절하여 둥근 느낌을 냄
-*/
+/* -------------------------------------------------------
+   반응형 미디어
+   -------------------------------------------------------*/
 
-/* 1번 종이 (왼쪽) */
-.paper-container.scattered .paper:nth-child(1) {
-    /* X를 -90px 정도로 줄여 중앙에 가깝게 붙임 */
-    transform: translate(calc(-90px + var(--x, 0px)), calc(0px + var(--y, 0px))) rotate(-30deg);
-    z-index: 2;
-    transition-delay: 0s;
+
+@media screen and (max-width: 1024px) {
+    .top-section::before { left: 10%; } 
+    .top-section::after { left: 90%; }
 }
 
-/* 2번 종이 (왼쪽 안쪽) */
-.paper-container.scattered .paper:nth-child(2) {
-    /* 살짝 아래로 내려오면서 겹침 */
-    transform: translate(calc(-45px + var(--x, 0px)), calc(40px + var(--y, 0px))) rotate(-15deg);
-    z-index: 3;
-    transition-delay: 0.1s;
+@media screen and (max-width: 768px) {
+    .top-section-wrapper { margin-top: 30px; }
+    .top-section { height: auto; min-height: 500px; }
+    
+    .top-section::before { left: 10px; height: 500px; }
+    .top-section::after { left: calc(100% - 10px); top: 0; height: 500px; }
+
+    .intro-text { font-size: 18px; letter-spacing: 0.1em; }
+    
+    .logo-box { transform: scale(0.8); } 
+    .bottom-section { margin-top: 100px; }
+    .instruction { font-size: 18px; margin-bottom: 100px; }
+
+    .paper { width: 180px; height: 250px; } 
+
+    .paper-container.scattered .paper:nth-child(1) {
+        transform: translate(calc(-60px + var(--x, 0px)), calc(0px + var(--y, 0px))) rotate(-15deg);
+    }
+    .paper-container.scattered .paper:nth-child(2) {
+        transform: translate(calc(-30px + var(--x, 0px)), calc(30px + var(--y, 0px))) rotate(-8deg);
+    }
+    .paper-container.scattered .paper:nth-child(3) {
+        transform: translate(calc(0px + var(--x, 0px)), calc(50px + var(--y, 0px))) rotate(0deg);
+    }
+    .paper-container.scattered .paper:nth-child(4) {
+        transform: translate(calc(30px + var(--x, 0px)), calc(30px + var(--y, 0px))) rotate(8deg);
+    }
+    .paper-container.scattered .paper:nth-child(5) {
+        transform: translate(calc(60px + var(--x, 0px)), calc(0px + var(--y, 0px))) rotate(15deg);
+    }
 }
 
-/* 3번 종이 (정중앙 - 가장 아래) */
-.paper-container.scattered .paper:nth-child(3) {
-    /* 정중앙에 위치하며 가장 아래쪽으로 내려옴 */
-    transform: translate(calc(0px + var(--x, 0px)), calc(60px + var(--y, 0px))) rotate(0deg);
-    z-index: 4;
-    transition-delay: 0.2s;
+@media screen and (min-width: 769px) {
+    .paper-container.scattered .paper:nth-child(1) {
+        transform: translate(calc(-90px + var(--x, 0px)), calc(0px + var(--y, 0px))) rotate(-30deg);
+        z-index: 2;
+    }
+    .paper-container.scattered .paper:nth-child(2) {
+        transform: translate(calc(-45px + var(--x, 0px)), calc(40px + var(--y, 0px))) rotate(-15deg);
+        z-index: 3;
+    }
+    .paper-container.scattered .paper:nth-child(3) {
+        transform: translate(calc(0px + var(--x, 0px)), calc(60px + var(--y, 0px))) rotate(0deg);
+        z-index: 4;
+    }
+    .paper-container.scattered .paper:nth-child(4) {
+        transform: translate(calc(45px + var(--x, 0px)), calc(40px + var(--y, 0px))) rotate(15deg);
+        z-index: 3;
+    }
+    .paper-container.scattered .paper:nth-child(5) {
+        transform: translate(calc(90px + var(--x, 0px)), calc(0px + var(--y, 0px))) rotate(30deg);
+        z-index: 2;
+    }
 }
 
-/* 4번 종이 (오른쪽 안쪽) */
-.paper-container.scattered .paper:nth-child(4) {
-    /* 대칭 */
-    transform: translate(calc(45px + var(--x, 0px)), calc(40px + var(--y, 0px))) rotate(15deg);
-    z-index: 3;
-    transition-delay: 0.15s;
-}
 
-/* 5번 종이 (오른쪽) */
-.paper-container.scattered .paper:nth-child(5) {
-    /* 대칭 */
-    transform: translate(calc(90px + var(--x, 0px)), calc(0px + var(--y, 0px))) rotate(30deg);
-    z-index: 2;
-    transition-delay: 0.05s;
-}
-
-
-/* 호버 효과 (유지) */
 .paper-container.scattered .paper:hover {
     box-shadow: 5px 10px 30px rgba(0, 0, 0, 0.15);
     z-index: 100;
     transition: transform 0.1s ease-out, box-shadow 0.2s ease; 
-    transition-delay: 0s; 
 }
 
-.paper-container.scattered .paper {
-    transition: transform 0.5s ease-out, opacity 0.8s ease-out;
-}
-
-/* --- [추가] 화면 전환 스타일 --- */
-
-/* 1. 메뉴 섹션 (기본: 숨김 상태) */
 .menu-section {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: #f5f5f5; /* 배경색 유지 */
+    background-color: #f5f5f5;
     z-index: 9999;
-    
     display: flex;
     justify-content: center;
     align-items: center;
-    
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.5s ease; /* 부드러운 전환 효과 */
-}
-
-/* 메뉴 내용 스타일 (리디바탕체)
-.menu-content {
-    font-family: 'Ridibatang', serif;
-    text-align: center;
-}
-.menu-content h2 { font-size: 32px; margin-bottom: 20px; }
-.menu-content p { font-size: 18px; color: #555; line-height: 1.6; }
- */
-
-/* 2. 화면 전환 활성화 상태 (body에 클래스가 붙으면 동작) */
-
-/* 기존 화면들 숨기기 */
-body.move-next .top-section-wrapper,
-body.move-next .bottom-section {
-    opacity: 0;
-    pointer-events: none; /* 클릭 방지 */
     transition: opacity 0.5s ease;
 }
 
-/* 메뉴 화면 보이기 */
+body.move-next .top-section-wrapper,
+body.move-next .bottom-section {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
 body.move-next .menu-section {
     opacity: 1;
     visibility: visible;
