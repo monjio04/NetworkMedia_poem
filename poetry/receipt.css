@@ -30,7 +30,7 @@
     /* Flex 구조 설정 */
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* 상-중-하 배치 */
+    /* justify-content: space-between; 상-중-하 배치 */
     
     box-sizing: border-box;
 }
@@ -102,17 +102,19 @@
    ========================================= */
 
 .receipt-body {
-    /* 남은 공간을 모두 차지하되, 넘치면 숨김 */
-    flex-grow: 1;
-    min-height: 0; /* Flex 자식 요소가 부모보다 커지는 것 방지 */
+    flex: 1; 
+    
+    width: 100%;
     overflow: hidden; 
     
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center; /* 내용 수직 중앙 정렬 */
     
-    padding: 0 10px;
+    /* 👇 내용물을 그 긴 공간의 '정중앙'에 예쁘게 모아줌 */
+    justify-content: center; 
+    align-items: center;
+    
+    margin: 10px 0; /* 위아래 간격 */
 }
 
 /* 메뉴 이름 */
@@ -129,21 +131,20 @@
 
 /* 이미지 컨테이너 (공간 부족 시 줄어듦) */
 .menu-image-container {
-    flex-shrink: 1; 
-    width: 100%;
-    max-height: 65%; /* 본문 높이의 35%까지만 차지 */
+    width: 300px;
+    height: 200px;
     
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    margin-bottom: 6px;
-    margin-top: -20px;
+    margin-bottom: 7px;
+    margin-top: 8px;
 }
 
 .menu-image-container img {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 80%;
+    max-height: 80%;
     object-fit: contain;
 }
 

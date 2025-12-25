@@ -564,3 +564,71 @@ function updateReceiptDateTime() {
     if (dateEl) { dateEl.innerHTML = `${year}/${month}/${day} <img src="${weatherSrc}" class="weather-icon-img" alt="${currentWeather}">`; }
     if (timeSlotEl) { timeSlotEl.innerText = timeSlotText; }
 }
+
+function initWelcomeData() {
+    // 1. "나 이미 선물 받았나?" 확인 (안전 장치)
+    const hasInjected = localStorage.getItem('data_injected');
+    
+    // 2. 이미 받았으면(true) 아무것도 하지 않고 함수 종료! (기존 데이터 보호)
+    if (hasInjected) {
+        console.log("✅ 기존 방문자입니다. 데이터 초기화를 건너뜁니다.");
+        return; 
+    }
+
+    // ----------------------------------------------------
+    // 🎁 처음 온 사람에게만 실행되는 로직
+    // ----------------------------------------------------
+    let archive = {}; 
+
+    // 📅 12월 23일 데이터
+    archive["2025-12-23"] = {
+        "morning": {
+            id: 1,
+            name: "소고기무국",
+            desc: "찬 바람이 불어 하루가 더 조용해질 때, 지나가는 시간을 막지 않고 흘려보내듯 뜨끈한 무국 한 숟가락이 위로가 돼요.",
+            image: "../image/beef_radish.png", 
+            timestamp: new Date("2025-12-23T09:00:00").getTime()
+        },
+        "lunch": {
+            id: 2,
+            name: "꼬막 비빔밥",
+            desc: "햇살이 맑게 비치는 날, 바다도 마음도 또렷해지는 순간. 매콤한 양념에 바다 향을 더한 꼬막 비빔밥이 기분 좋게 어울려요.",
+            image: "../image/bibimbap.png", 
+            timestamp: new Date("2025-12-23T12:30:00").getTime()
+        },
+        "dinner": {
+            id: 3,
+            name: "삼계탕",
+            desc: "'너는 익어 가는구나'. 오랜 시간 뜨거움을 견디며 푹 고아낸 깊은 국물처럼, 우리의 시간도 깊고 진하게 우러나는 중일 거예요.",
+            image: "../image/samgyetang.png",
+            timestamp: new Date("2025-12-23T19:00:00").getTime()
+        }
+    };
+
+    // 📅 12월 24일 데이터
+    archive["2025-12-24"] = {
+        "lunch": {
+            id: 4,
+            name: "감자전",
+            desc: "빗소리와 함께 지글지글 익어가는 고소한 향기가, 복잡한 머릿속을 차분하게 비워줄 겁니다.",
+            image: "../image/potato_jeon.png", 
+            timestamp: new Date("2025-12-24T13:00:00").getTime()
+        },
+        "dinner": {
+            id: 5,
+            name: "후라이드 치킨",
+            desc: "나는 늙어가는데 너는 참 맛있게도 익었구나. 오늘 밤은 너의 그 바삭한 생을 빌려야겠다.",
+            image: "../image/fried_chicken.png", 
+            timestamp: new Date("2025-12-24T20:00:00").getTime()
+        }
+    };
+
+    // 3. 데이터 저장 및 도장 찍기
+    localStorage.setItem('poem_receipt_archive', JSON.stringify(archive));
+    localStorage.setItem('data_injected', 'true'); // "선물 받음" 도장 꾹!
+    
+    console.log("🎁 환영합니다! 초기 데이터가 지급되었습니다.");
+}
+
+// 실행
+initWelcomeData();
